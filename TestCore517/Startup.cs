@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Atalasoft.Imaging.WebControls.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace TestCore517
 {
@@ -16,6 +16,13 @@ namespace TestCore517
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddResponseCaching();
+
+            services.AddResponseCompression( options =>
+            {
+                options.Providers.Add<GzipCompressionProvider>();
+                options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] {"image/png"});
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -28,8 +35,23 @@ namespace TestCore517
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseResponseCaching();
 
-            app.Map( "/wdv", wdvApp => { wdvApp.RunWebDocumentViewerMiddleware(); } );
+            app.Map( "/wdv", wdvApp => {
+
+                wdvApp.Use(async (context, next) =>
+                {
+                    context.Response.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+                    {
+                        Public = true,
+                        MaxAge = TimeSpan.FromSeconds(10)
+                    };
+
+                    await next();
+                });
+
+                wdvApp.RunWebDocumentViewerMiddleware();
+            });
         }
     }
 }
