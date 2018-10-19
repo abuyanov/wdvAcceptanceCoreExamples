@@ -38,6 +38,8 @@ $(function () {
             viewer: _viewer,
             allowannotations: true,
             allowdragdrop: true,
+            showthumbcaption: false,
+            thumbcaptionformat: 'page {0}'// from file {1}'
         });
 
         // Uncomment the following 2 lines if the toolbar buttons should be displayed without text
