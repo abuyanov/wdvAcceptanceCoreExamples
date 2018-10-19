@@ -25,22 +25,40 @@
                 <h5>Select File to display: </h5>
                 <select ID="FileSelectionList" onchange="loadFile();">
                     <option value="images/Test.pdf">Test.pdf</option>
-                    <option value="images/newpdf.pdf">new.pdf</option>
-                    <option value="images/fix966490.tif">fix966490.tif</option>
+                    <option value="images/TrueType_SimSun.pdf">TrueType_SimSun.pdf</option>
+                    <option value="images/TessOcrResult_report.pdf">TessOcrResult_report.pdf</option>
+                    <option value="images/London.doc">London.doc</option>
+                    <option value="images/London.doc">London.docx</option>
+                    <option value="images/London.rtf">London.rtf</option>
                 </select>
 
                 <div class="atala-document-thumbnailer" style="width: 200px; height: 500px; float: left"></div>
             </div>
             <div class="viewer-container">
-                <div class="atala-document-toolbar" style="width: 800px;"></div>
-                <div class="atala-document-container" style="width: 800px; height: 600px;"></div>
+                <div class="atala-document-toolbar" style="width: 1200px;"></div>
+                <div class="atala-document-container" style="width: 1200px; height: 600px;"></div>
             </div>
-        </div>
-        
-        <div>
-          <h3>Status:</h3>
-          <div id="status" style="width:670px; height:150px; overflow:scroll; border:solid 1px #CCC;"></div>
-        </div>
-    </form>
+
+            <div class="page-operation-container">
+                <div>
+                    <h3>Select operations</h3>
+                    <input type="button" id="btnCopySelected" onclick="copySelection();" value="Copy selected" />
+                    <input type="button" id="btnClearSelected" onclick="clearSelected();" value="Clear Selection" />
+                 </div>
+                <div>
+                    <h3>Select text on page:</h3>
+                    Page: <input type="number" name="pagestosel" id="pagestosel" />
+                    Region: <input type="number" name="regstosel" id="regtosel" />
+                    Line: <input type="number" name="linetosel" id="linetosel" />
+                    Word: <input type="number" name="wordtosel" id="wordtosel" />
+                    <input type="button" id="btnSelectPageTxt" onclick="selectPageTxt();" value="Select Text" />
+                </div>
+            </div>
+
+            <div>
+                <h3>Status:</h3>
+                <div id="status" style="width:670px; height:150px; overflow:scroll; border:solid 1px #CCC;"></div>
+            </div>
+</form>
 </body>
 </html>

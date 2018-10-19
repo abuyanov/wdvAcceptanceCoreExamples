@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Atalasoft.dotImage.Office.x86" Version="11.0.0.11517" />
     <PackageReference Include="Atalasoft.dotImage.WebControls.Core.x86" Version="11.0.0.11517" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.1.1" />
