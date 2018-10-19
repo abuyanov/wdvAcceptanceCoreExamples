@@ -21,7 +21,11 @@ $(function () {
             },
             serverurl: 'wdv',
             allowtext: true,
-            scrolltriggerarea: Atalasoft.Utils.ScrollArea.Normal
+            scrolltriggerarea: Atalasoft.Utils.ScrollArea.Normal,
+            mousetool: {
+                type: Atalasoft.Utils.MouseToolType.Pan
+            }
+
         });
 
         _thumb = new Atalasoft.Controls.WebDocumentThumbnailer({
@@ -86,4 +90,24 @@ function selectPageTxt() {
     } else {
         _viewer.text.selectPageText(pageIndex, regIndex, lineIndex, wrdIndex, reportSuccess, reportFailure)
     }   
+}
+
+function getPageTxt() {
+    var pageIndex = $("#pagestosel").val()
+    _viewer.text.getPageText(pageIndex, function (arguments) { alert(arguments) })
+}
+
+function selectPageTxt2() {
+    var pageIndex = $("#pagestosel").val()
+    _viewer.text.selectPageText(pageIndex, function () { console.log('success') }, function () { console.log('fail') })
+}
+
+function SearchAndSelectTxt() {
+    var startPageIndex = $("#srchStartIndex").val()
+    var searchTxt = $("#txtSearch").val()
+    _viewer.text.search(searchTxt, startPageIndex, function (it,match) {
+        if (it.isValid()) {
+            _viewer.text.selectPageText(match.page,match.region,match.line,match.word)
+        }
+    })
 }
