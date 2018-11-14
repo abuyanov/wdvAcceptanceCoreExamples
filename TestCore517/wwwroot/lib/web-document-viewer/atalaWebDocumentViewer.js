@@ -148,7 +148,7 @@ Utils:Atalasoft.Utils||{},
      * @namespace Atalasoft.Upload
      * @private
      */
-Upload:Atalasoft.Upload||{}},Atalasoft.Controls.Version=[11,1,0,298];var _Statics={instanceCounter:0};
+Upload:Atalasoft.Upload||{}},Atalasoft.Controls.Version=[11,1,0,299];var _Statics={instanceCounter:0};
 /**
   * Control that views, modifies, and saves documents, annotations and forms.
   * @param {WebDocumentViewerConfig} [settings] Object of key value pairs representing initial settings

@@ -1,5 +1,5 @@
 ﻿var _viewer, _thumb;
-
+var lastUploadedFile;
 // Show status and error messages
 function appendStatus(msg) {
     var stat = $("#status");
@@ -24,6 +24,13 @@ $(function () {
             scrolltriggerarea: Atalasoft.Utils.ScrollArea.Normal,
             mousetool: {
                 type: Atalasoft.Utils.MouseToolType.Pan
+            },
+            upload: {
+                uploadpath: 'Upload/Viewer',
+                allowedfiletypes: '.jpg,.pdf',
+                allowedmaxfilesize: 10*1024*1024,
+                allowmultiplefiles: true,
+                allowdragdrop: true
             }
 
         });
@@ -39,7 +46,8 @@ $(function () {
             allowannotations: true,
             allowdragdrop: true,
             showthumbcaption: false,
-            thumbcaptionformat: 'page {0}'// from file {1}'
+            thumbcaptionformat: 'page {0}',
+            //showselecttools: true,
         });
 
         // Uncomment the following 2 lines if the toolbar buttons should be displayed without text
@@ -51,8 +59,29 @@ $(function () {
     } catch (error) {
         appendStatus("Thrown error: " + error.description);
     }
+
+    _viewer.bind({
+        'fileuploadstarted':onUploadStart,
+        'fileuploadfinished': onFileUploadFinished,
+        'uploadfinished':onUploadFinished,
+        })
 });
 
+function onUploadStart(eventObj) {
+    appendStatus('Start uploading file: ' + eventObj.fileinfo.filename)
+}
+
+function onFileUploadFinished(eventObj) {
+    appendStatus('file upload finished with result ' + eventObj.success);
+    lastUploadedFile = eventObj.filepath;
+}
+
+function onUploadFinished(eventObj) {
+    appendStatus('Upload finished with result: ' + eventObj.success)
+    if(lastUploadedFile)
+        _thumb.OpenUrl(lastUploadedFile)
+
+}
 
 function loadFile() {
     _thumb.OpenUrl($('#FileSelectionList').val());
