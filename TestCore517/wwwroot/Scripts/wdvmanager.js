@@ -26,11 +26,13 @@ $(function () {
                 type: Atalasoft.Utils.MouseToolType.Pan
             },
             upload: {
+                enabled:true,
                 uploadpath: 'Upload/Viewer',
-                allowedfiletypes: '.jpg,.pdf',
+                allowedfiletypes: '.jpg,.pdf,.png,.jpeg,image/tiff',
                 allowedmaxfilesize: 10*1024*1024,
                 allowmultiplefiles: true,
-                allowdragdrop: true
+                allowdragdrop: false,
+                filesuploadconcurrency: 2,
             }
 
         });
@@ -87,58 +89,3 @@ function loadFile() {
     _thumb.OpenUrl($('#FileSelectionList').val());
 }
 
-function copySelection() {
-    _viewer.text.copySelected();
-}
-
-function clearSelected() {
-    _viewer.text.clearSelection();
-}
-
-function reportFailure() {
-    appendStatus("Failed to select text on page.")
-}
-
-function reportSuccess() {
-    copySelection();
-    appendStatus("Text selected.");
-}
-
-
-function selectPageTxt() {
-    var pageIndex = $("#pagestosel").val()
-    var regIndex = $("#regtosel").val()
-    var lineIndex = $("#linetosel").val()
-    var wrdIndex = $("#wordtosel").val()
-    if (regIndex == "") {
-        _viewer.text.selectPageText(pageIndex, null, reportSuccess, reportFailure)
-    }
-    else if (lineIndex == "") {
-        _viewer.text.selectPageText(pageIndex, regIndex, reportSuccess, reportFailure)
-    }
-    else if (wrdIndex == "") {
-        _viewer.text.selectPageText(pageIndex, regIndex, lineIndex, reportSuccess, reportFailure)
-    } else {
-        _viewer.text.selectPageText(pageIndex, regIndex, lineIndex, wrdIndex, reportSuccess, reportFailure)
-    }   
-}
-
-function getPageTxt() {
-    var pageIndex = $("#pagestosel").val()
-    _viewer.text.getPageText(pageIndex, function (arguments) { alert(arguments) })
-}
-
-function selectPageTxt2() {
-    var pageIndex = $("#pagestosel").val()
-    _viewer.text.selectPageText(pageIndex, function () { console.log('success') }, function () { console.log('fail') })
-}
-
-function SearchAndSelectTxt() {
-    var startPageIndex = $("#srchStartIndex").val()
-    var searchTxt = $("#txtSearch").val()
-    _viewer.text.search(searchTxt, startPageIndex, function (it,match) {
-        if (it.isValid()) {
-            _viewer.text.selectPageText(match.page,match.region,match.line,match.word)
-        }
-    })
-}
