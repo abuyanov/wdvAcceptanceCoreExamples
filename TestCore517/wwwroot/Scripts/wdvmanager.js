@@ -29,7 +29,7 @@ $(function () {
                 enabled:true,
                 uploadpath: 'Upload/Viewer',
                 allowedfiletypes: '.jpg,.pdf,.png,.jpeg,image/tiff',
-                allowedmaxfilesize: 50*1024,
+                allowedmaxfilesize: 5*1024*1024,
                 allowmultiplefiles: true,
                 allowdragdrop: true,
                 filesuploadconcurrency: 2,
