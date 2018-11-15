@@ -29,9 +29,9 @@ $(function () {
                 enabled:true,
                 uploadpath: 'Upload/Viewer',
                 allowedfiletypes: '.jpg,.pdf,.png,.jpeg,image/tiff',
-                allowedmaxfilesize: 10*1024*1024,
+                allowedmaxfilesize: 50*1024,
                 allowmultiplefiles: true,
-                allowdragdrop: false,
+                allowdragdrop: true,
                 filesuploadconcurrency: 2,
             }
 
@@ -63,23 +63,50 @@ $(function () {
     }
 
     _viewer.bind({
-        'fileuploadstarted':onUploadStart,
+        'fileaddedtoupload':onFileAdded,
+        'uploadstarted':onUploadStart,
+        'fileuploadstarted':onFileUploadStart,
         'fileuploadfinished': onFileUploadFinished,
         'uploadfinished':onUploadFinished,
         })
 });
 
-function onUploadStart(eventObj) {
+function onFileAdded (eventObj) {
+    if (eventObj.success) {
+        appendStatus('File '+ eventObj.filename + ' is ready to upload')
+    } else {
+        switch (eventObj.reason) {
+        case 1:
+            appendStatus("The size of file is greater then " + _viewer.config.upload.allowedmaxfilesize + " bytes permitted");
+            break;
+        case 2:
+            appendStatus("Prohibited file type.");
+            break;
+        case 3:
+            appendStatus("File with same name is alredy added to upload. " + eventObj.filename);
+            break;
+        }
+        
+    }
+
+}
+
+function onUploadStart() {
+    appendStatus('Uploading started')
+}
+
+function onFileUploadStart(eventObj) {
     appendStatus('Start uploading file: ' + eventObj.fileinfo.filename)
 }
 
 function onFileUploadFinished(eventObj) {
-    appendStatus('file upload finished with result ' + eventObj.success);
+    appendStatus('File ' + eventObj.filename + ' is uploaded.');
     lastUploadedFile = eventObj.filepath;
 }
 
 function onUploadFinished(eventObj) {
     appendStatus('Upload finished with result: ' + eventObj.success)
+    appendStatus('-----------------------------')
     if(lastUploadedFile)
         _thumb.OpenUrl(lastUploadedFile)
 
