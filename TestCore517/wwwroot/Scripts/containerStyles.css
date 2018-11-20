@@ -1,7 +1,6 @@
 ﻿.main-container {
-    display: box;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: flex-start;
     margin: 4px 0 4px 0
 }
@@ -23,7 +22,21 @@
     flex-direction: column
 }
 
-body {
+.bottom-container {
+    display: flex;
+    flex-direction: column
+}
+
+#status {
+    width:670px;
+    height:150px;
+    overflow:scroll;
+    border:solid 1px #CCC;
+}
+
+#FileSelectionList {
+    box-sizing: content-box;
+    max-width: 600px
 }
 
 .atala_thumb_caption{
