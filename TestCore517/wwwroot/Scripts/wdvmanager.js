@@ -1,7 +1,8 @@
 ﻿var _viewer, _thumb, _thumb2;
 var lastUploadedFile;
 var selectedAnno;
-var _currIter;
+var _currIter; _currAnnoIndx = 0;
+var Annotations = [];
 // Show status and error messages
 function appendStatus(msg) {
     var stat = $("#status");
@@ -68,10 +69,15 @@ $(function () {
             selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.SelectedOrder,
         });
 
+        _thumb.bind({
+            'documentloaded':onDocLoaded,
+        })
+
         _thumb2.bind({
             'thumbdragstart':onDragStart,
             'thumbdragend': onDragEnd,
             'thumbdragcomplete': onDragComplete,
+            'documentloaded':onDocLoaded,
             
         });
 
@@ -92,10 +98,49 @@ $(function () {
         'fileuploadfinished': onFileUploadFinished,
         'uploadfinished':onUploadFinished,
         'annotationtextchanged':onAnnoTextChanged,
-        'annotationcreated':onAnnoCreated,
-        'error':onViewerError
+        //'annotationcreated':onAnnoCreated,
+        'annotationloaded':onAnnoLoaded,
+        'annotationsloaded':onAnnosLoaded,
+        'error':onViewerError,
+        'documentsaved':onDocSaved,
+        'documentinfochanged':onInfoChanged,
+        
+        //'pagetextloaded':onTextLoaded,
         })
 });
+
+function onDocSaved(ev) {
+    if (ev.success) {
+        appendStatus("Document saved to: " + ev.filename)
+        appendStatus(ev.customData.Message)
+    } else {
+        appendStatus("Failed to save document")
+    }
+}
+
+function onDocLoaded(event) {
+    appendStatus(event.customData.CustomMessage)
+}
+
+function onInfoChanged(evnt) {
+    appendStatus("Document info changed")
+    if(!!evnt.customData)
+    appendStatus(evnt.customData.CustomMessage)
+}
+
+function onAnnosLoaded(evnt) {
+    //appendStatus(evnt.customData.CustomMessage)
+    if(Annotations.length != 0)
+        getAnnotations()
+}
+
+function onAnnoLoaded(evnt) {
+    appendStatus(evnt.customData.CustomMessage)
+}
+
+function onTextLoaded(ev) {
+    appendStatus(ev.customData.CustomMessage)
+}
 
 function onFileAdded (eventObj) {
     if (eventObj.success) {
@@ -150,6 +195,14 @@ function onUploadFinished(eventObj) {
 
 function loadFile() {
     _thumb.OpenUrl($('#FileSelectionList').val());
+}
+
+function loadAnnotations(){
+    var currFile = $('#FileSelectionList').val()
+    var filename = currFile.split('/')[1]
+    var fname = filename.split('.')[0]
+    var xmpFile = "Saved/" + fname + ".xmp"
+    _thumb.OpenUrl(null,xmpFile)
 }
 
 //Drug and Drop events
@@ -251,13 +304,15 @@ function onViewerError(errEvent) {
     appendStatus(errEvent.message)
 }
 
-function runThroughAnnot() {
-    for (i = 0; i < _viewer.getDocumentInfo().count; i++) {
+function getAnnotations() {
+    for (var i = 0; i < _viewer.getDocumentInfo().count; i++) {
         var annos = _viewer.getAnnotationsFromPage(i);
         for (var j = 0; j < annos.length; j++) {
-            _viewer.annotations.scrollTo(annos[j],onScroll)            
+            Annotations.push(annos[j])           
         }
     }
+    _currAnnoIndx = 0;
+    _viewer.annotations.scrollTo(Annotations[_currAnnoIndx])
 }
 
 function onScroll() {
@@ -282,5 +337,22 @@ function onNextMatch(iterator, match) {
     if (iterator.isValid()) {
         _currIter = iterator;
         _viewer.text.selectPageText(match.page, match.region, match.line, match.word);
+    }
+}
+
+function goNextAnno() {
+    next = _currAnnoIndx + 1;
+    if (next <= Annotations.length - 1) {
+        _viewer.annotations.scrollTo(Annotations[next])
+        _currAnnoIndx = next;
+    }
+    
+}
+
+function goPrevAnno(){
+    next = _currAnnoIndx -1;
+    if (next >= 0) {
+        _viewer.annotations.scrollTo(Annotations[next])
+        _currAnnoIndx = next;
     }
 }

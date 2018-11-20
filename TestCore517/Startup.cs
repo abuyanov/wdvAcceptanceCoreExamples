@@ -51,7 +51,7 @@ namespace TestCore517
                     await next();
                 });
 
-                wdvApp.RunWebDocumentViewerMiddleware();
+                wdvApp.RunWebDocumentViewerMiddleware(new AbWdvCallbacks());
             });
         }
     }
