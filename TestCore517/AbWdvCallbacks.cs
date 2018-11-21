@@ -32,11 +32,15 @@ namespace TestCore517
         //        e.Cancel = true;
         //}
 
+        //got
+
+
         public override void DocumentSaveResponseSend(ResponseSendEventArgs e)
         {
             e.CustomResponseData.Add("Message","All we need is love!!!");
         }
 
+        //got
         public override void DocumentInfoRequestResponseSend(ResponseSendEventArgs e)
         {
             e.CustomResponseData.Add("CustomMessage","Doc info was requested.");
@@ -52,6 +56,7 @@ namespace TestCore517
             e.CustomResponseData.Add("CustomMessage","Text request");
         }
 
+        //got
         public override void AnnotationsDataResponseSend(ResponseSendEventArgs e)
         {
             e.CustomResponseData.Add("CustomMessage","Annotation response");

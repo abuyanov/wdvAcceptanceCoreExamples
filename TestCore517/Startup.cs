@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Atalasoft.Imaging.WebControls;
 using Atalasoft.Imaging.WebControls.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -51,7 +52,7 @@ namespace TestCore517
                     await next();
                 });
 
-                wdvApp.RunWebDocumentViewerMiddleware(new AbWdvCallbacks());
+                wdvApp.RunWebDocumentViewerMiddleware(new WebDocumentViewerOptions(){ReplaceFileExtensionOnSave = ReplaceFileExtension.AllFiles},new AbWdvCallbacks());
             });
         }
     }

@@ -20,6 +20,7 @@ $(function () {
             allowannotations: true,
             //showerrors: true,
             'savepath': 'Saved',
+            'savefileformat':'pdf',
             'annotations':{'atala_iuname': 'mm'},
             serverurl: 'wdv',
             allowtext: true,
