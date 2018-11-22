@@ -224,13 +224,6 @@ function onDragComplete(evnt, data) {
     //appendStatus(`Page drugged from page ${data.dragindex} to page ${data.dropindex} data.`)
 }
 
-function insertPages() {
-    var page = $("#pagetomove").val()
-    var insIndex = $("#targetinsindx").val();
-    thumbs.document.insertPage(null, _thumb2.document.getPageReference(page), insIndex);
-    appendStatus("Page were moved");
-}
-
 //Select pages
 //Add page to set of selected pages.
 function selectPage() {
@@ -277,10 +270,10 @@ function movePages() {
 function insertPages() {
     var refs = []
     var pages = _thumb.getSelectedPagesIndices();
-    for (var index in pages) {
-        refs.push(_thumb.document.getPageReference(index))
+    for (var i = 0; i < pages.length; i++) 
+    {
+        refs.push(_thumb.document.getPageReference(pages[i]))
     }
-
     _thumb2.document.insertPages(null,refs,0,appendStatus("Pages were inserted."))
 };
 
