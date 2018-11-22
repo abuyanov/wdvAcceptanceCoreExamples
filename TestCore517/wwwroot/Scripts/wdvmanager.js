@@ -55,7 +55,7 @@ $(function () {
             selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.SelectedOrder,
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
             tabular:true,
-            columns:2
+            columns:3
         });
 
         // Initialize Second Thumbnail
