@@ -1,7 +1,8 @@
 ﻿var _viewer, _thumb, _thumb2;
 var lastUploadedFile;
 var selectedAnno;
-var _currIter; _currAnnoIndx = 0;
+var _currIter;
+var _currAnnoIndx = 0;
 var Annotations = [];
 // Show status and error messages
 function appendStatus(msg) {
@@ -19,7 +20,7 @@ $(function () {
             'allowforms': true,
             allowannotations: true,
             //showerrors: true,
-            'savepath': 'Saved',
+            'savepath': 'Saved/',
             'savefileformat':'pdf',
             'annotations':{'atala_iuname': 'mm'},
             serverurl: 'wdv',
@@ -52,7 +53,9 @@ $(function () {
             thumbcaptionformat: 'page {0}',
             selectionmode: Atalasoft.Utils.SelectionMode.MultiSelect,
             selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.SelectedOrder,
-            direction: Atalasoft.Utils.ScrollDirection.Horizontal,
+            direction: Atalasoft.Utils.ScrollDirection.Vertical,
+            tabular:true,
+            columns:2
         });
 
         // Initialize Second Thumbnail
@@ -65,7 +68,7 @@ $(function () {
             viewer:_viewer,
             allowannotations: true,
             showthumbcaption: true,
-            direction: Atalasoft.Utils.ScrollDirection.Horizontal,
+            direction: Atalasoft.Utils.ScrollDirection.Vertical,
             selectionmode: Atalasoft.Utils.SelectionMode.MultiSelect,
             selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.SelectedOrder,
         });
@@ -112,10 +115,10 @@ $(function () {
 
 function onDocSaved(ev) {
     if (ev.success) {
-        appendStatus("Document saved to: " + ev.filename)
-        appendStatus(ev.customData.Message)
+        appendStatus("Document saved to: " + ev.fileName);
+        appendStatus(ev.customData.Message);
     } else {
-        appendStatus("Failed to save document")
+        appendStatus("Failed to save document");
     }
 }
 
@@ -342,7 +345,7 @@ function onNextMatch(iterator, match) {
 }
 
 function goNextAnno() {
-    next = _currAnnoIndx + 1;
+    var next = _currAnnoIndx + 1;
     if (next <= Annotations.length - 1) {
         _viewer.annotations.scrollTo(Annotations[next])
         _currAnnoIndx = next;
@@ -351,9 +354,17 @@ function goNextAnno() {
 }
 
 function goPrevAnno(){
-    next = _currAnnoIndx -1;
+    var next = _currAnnoIndx -1;
     if (next >= 0) {
         _viewer.annotations.scrollTo(Annotations[next])
         _currAnnoIndx = next;
     }
+}
+
+function saveAsJpg() {
+    _viewer.save('jpgs', 'jpg');
+}
+
+function copySelectedText() {
+    _viewer.text.copySelected();
 }

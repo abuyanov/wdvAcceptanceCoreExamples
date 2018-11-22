@@ -1,6 +1,6 @@
 ﻿.main-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: flex-start;
     margin: 4px 0 4px 0
 }
