@@ -19,7 +19,7 @@ $(function () {
             toolbarparent: $('.atala-document-toolbar'),
             'allowforms': true,
             allowannotations: true,
-            //showerrors: true,
+            showerrors: true,
             'savepath': 'Saved/',
             'savefileformat':'pdf',
             'annotations':{'atala_iuname': 'mm'},
@@ -55,7 +55,7 @@ $(function () {
             selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.SelectedOrder,
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
             tabular:true,
-            columns:3
+            columns:2
         });
 
         // Initialize Second Thumbnail
@@ -104,7 +104,7 @@ $(function () {
         'annotationtextchanged':onAnnoTextChanged,
         //'annotationcreated':onAnnoCreated,
         'annotationloaded':onAnnoLoaded,
-        'annotationsloaded':onAnnosLoaded,
+        //'annotationsloaded':onAnnosLoaded,
         'error':onViewerError,
         'documentsaved':onDocSaved,
         'documentinfochanged':onInfoChanged,
@@ -134,7 +134,7 @@ function onInfoChanged(evnt) {
 
 function onAnnosLoaded(evnt) {
     //appendStatus(evnt.customData.CustomMessage)
-    if(Annotations.length != 0)
+    //if(Annotations.length != 0)
         getAnnotations()
 }
 
