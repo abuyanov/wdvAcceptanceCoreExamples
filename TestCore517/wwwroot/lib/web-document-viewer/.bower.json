@@ -29,14 +29,15 @@
     "jquery-easing-original": "^1.3.0",
     "clipboard": "^1.5.10"
   },
-  "version": "11.0.10",
-  "_release": "11.0.10",
+  "version": "11.0.11",
+  "_release": "11.0.11",
   "_resolution": {
     "type": "version",
-    "tag": "v11.0.10",
-    "commit": "53571ff9a2184e53cb02fc3f2dfb42d32a4d53fe"
+    "tag": "v11.0.11",
+    "commit": "613063e3f176aa9dc6420bf5afcd6e9481d6f1ff"
   },
   "_source": "https://github.com/Atalasoft/web-document-viewer.git",
-  "_target": "~11.0.10",
-  "_originalSource": "web-document-viewer"
+  "_target": "v11.0.11",
+  "_originalSource": "web-document-viewer",
+  "_direct": true
 }

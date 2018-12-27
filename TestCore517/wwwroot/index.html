@@ -24,49 +24,82 @@
             <div class="thumb-container">
                 <h5>Select File to display: </h5>
                 <select ID="FileSelectionList" onchange="loadFile();">
+                    <option value="images/neutralino.pdf">neutralino</option>
+                    <option value="images/DynamucLang.pdf">DynamucLang.pdf</option>
+                    <option value="images/FilledForm2.pdf">Form2</option>
+                    <option value="images/10Numbered Pages.TIF">10Numbered Pages.tif</option>
+                    <option value="images/London.docx">London.docx</option>
                     <option value="images/Test.pdf">Test.pdf</option>
-                    <option value="images/TrueType_SimSun.pdf">TrueType_SimSun.pdf</option>
-                    <option value="images/TessOcrResult_report.pdf">TessOcrResult_report.pdf</option>
-                    <option value="images/London.doc">London.doc</option>
-                    <option value="images/London.doc">London.docx</option>
-                    <option value="images/London.rtf">London.rtf</option>
+                    <option value="images/Back to School Planner.xlsx">excel</option>
+                    <option value="images/plane.pptx">Powerpoint</option>
                 </select>
 
-                <div class="atala-document-thumbnailer" style="width: 200px; height: 500px; float: left"></div>
-            </div>
-            <div class="viewer-container">
-                <div class="atala-document-toolbar" style="width: 1200px;"></div>
-                <div class="atala-document-container" style="width: 1200px; height: 600px;"></div>
+                <div id="thumb1" class="atala-document-thumbnailer" style="width: 150px; height: 600px; float: left"></div>
             </div>
 
+            <div class="viewer-container">
+                <div class="atala-document-toolbar" style="width: 900px;"></div>
+                <div class="atala-document-container" style="width: 900px; height: 600px;"></div>
+            </div>
+            
+            <div class="thumb-container">
+                <h5>Last uploaded file</h5>
+                <div id="thumb2" class="atala-document-thumbnailer" style="width: 150px; height: 600px; float: left"></div>
+            </div>
+
+            
+        </div>
+        <div class="bottom-container">
             <div class="page-operation-container">
                 <div>
-                    <h3>Select operations</h3>
-                    <input type="button" id="btnCopySelected" onclick="copySelection();" value="Copy selected" />
-                    <input type="button" id="btnClearSelected" onclick="clearSelected();" value="Clear Selection" />
+                    <h3>Select pages</h3>
+                    Page number: <input type="number" name="pagetoselect" id="PageToSelectNum" min="0" />
+                    <input type="button" id="btnSelectPage" onclick="selectPage();" value="Add to Selected" />
+                    <input type="button" id="btnDeselectPage" onclick="deselectPage();" value="Select this page only" />
+
+                    <input type="button" id="btnGetSelectedPage" onclick="getSelectPage();" value="Show selected" />
+                    <input type="button" id="btnGetSelectedPages" onclick="getSelectedPages();" value="Show selected pages" />
                 </div>
                 <div>
-                    <h3>Select text on page:</h3>
-                    Page: <input type="number" name="pagestosel" id="pagestosel" />
-                    Region: <input type="number" name="regstosel" id="regtosel" />
-                    Line: <input type="number" name="linetosel" id="linetosel" />
-                    Word: <input type="number" name="wordtosel" id="wordtosel" />
-                    <input type="button" id="btnSelectPageTxt" onclick="selectPageTxt();" value="Select Text" />
-                    <input type="button" id="btnGetPageTxt" onclick="getPageTxt();" value="Get Whole Page Text" />
-                    <input type="button" id="btn1" onclick="selectPageTxt2()" value="Test It!" />
+                    <h3>Page operations</h3>
+                    <input type="button" id="btnDeletePages" onclick="deletePages();" value="Delete Pages" />
+                    <input type="button" id="btnRotatePages" onclick="rotatePages();" value="Rotate Pages" />
+                    <input type="button" id="btnMovePages" onclick="movePages();" value="Move Pages" />
+                    <input type="button" id="btnInsertPages" onclick="insertPages();" value="Insert Pages" />
                 </div>
                 <div>
-                    <h3>Search on page</h3>
-                    Search to: <input type="text" name="textToSearch" id="txtSearch" />
-                    Start page: <input type="number" value="0" name="srchStartPage" id="srchStartIndex" min="0"/>
-                    <input type="button" id="btnSelectPageTxt" onclick="SearchAndSelectTxt();" value="Search" />
+                    <h3>Castom Search</h3>
+                    Start page (first by default): <input type="number" name="startpage" id="SearchStartPage" min="0" />
+                    End page (empty = end of document): <input type="number" name="endpage" id="SearchEndPage" min="0" />
+                    Phrase: <input type="text" name="serachwthat" id="searchPhrase" />
+                    <input type="button" id="btnSearch" onclick="searchText();" value="Search" />
+                    <input type="button" id="btnSearchNext" onclick="onFindNext();" value="Next" />
+                    <input type="button" id="btnSearchPrev" onclick="onFindPrevious();" value="Prev" />
                 </div>
-            </div>
+                <div>
+                    <h3>Annotations</h3>
+                    <input type="button" id="btnScrollAnn" onclick="loadAnnotations();" value="Load annotations" />
+                    <input type="button" id="btnEnumAnn" onclick="getAnnotations();" value="Enumerate annotations" />
+                    <input type="button" id="btnNextAnn" onclick="goNextAnno();" value="Next Annotation" />
+                    <input type="button" id="btnPrevAnn" onclick="goPrevAnno();" value="Previous Annotation" />
+                    Annotation to burn index: <input type="number" name="annoindex" id="annoindex" min="0" />
+                    <input type="button" id="btnBurnAnnot" onclick="burnAnnotation();" value="Burn Annotation" />
+                </div>
+                <div>
+                    <h3>Save as:</h3>
+                    <input type="button" id="btnSaveJpg" onclick="saveAsJpg();" value="Save Jpg" />
+                    <input type="button" id="btnImgReq" onclick="requestImage();" value="Request Image" />
+                </div>
+                <div>
+                    <h3>Copy text</h3>
+                    <input type="button" id="btnCopySelected" onclick="copySelectedText();" value="Copy Text" />
+                </div>
             </div>
             <div>
                 <h3>Status:</h3>
-                <div id="status" style="width:670px; height:150px; overflow:scroll; border:solid 1px #CCC;"></div>
+                <div id="status"></div>
             </div>
+        </div>
     </form>
 </body>
 </html>
