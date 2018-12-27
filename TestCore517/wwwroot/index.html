@@ -26,13 +26,15 @@
                 <select ID="FileSelectionList" onchange="loadFile();">
                     <option value="images/neutralino.pdf">neutralino</option>
                     <option value="images/DynamucLang.pdf">DynamucLang.pdf</option>
-                    <option value="images/numbers.pdf">numbers.pdf</option>
-                    <option value="images/Rocket">Rocket</option>
-                    <option value="images/London.doc">London.doc</option>
+                    <option value="images/FilledForm2.pdf">Form2</option>
+                    <option value="images/10Numbered Pages.TIF">10Numbered Pages.tif</option>
+                    <option value="images/London.docx">London.docx</option>
                     <option value="images/Test.pdf">Test.pdf</option>
+                    <option value="images/Back to School Planner.xlsx">excel</option>
+                    <option value="images/plane.pptx">Powerpoint</option>
                 </select>
 
-                <div id="thumb1" class="atala-document-thumbnailer" style="width: 200px; height: 600px; float: left"></div>
+                <div id="thumb1" class="atala-document-thumbnailer" style="width: 150px; height: 600px; float: left"></div>
             </div>
 
             <div class="viewer-container">
@@ -80,10 +82,13 @@
                     <input type="button" id="btnEnumAnn" onclick="getAnnotations();" value="Enumerate annotations" />
                     <input type="button" id="btnNextAnn" onclick="goNextAnno();" value="Next Annotation" />
                     <input type="button" id="btnPrevAnn" onclick="goPrevAnno();" value="Previous Annotation" />
+                    Annotation to burn index: <input type="number" name="annoindex" id="annoindex" min="0" />
+                    <input type="button" id="btnBurnAnnot" onclick="burnAnnotation();" value="Burn Annotation" />
                 </div>
                 <div>
                     <h3>Save as:</h3>
                     <input type="button" id="btnSaveJpg" onclick="saveAsJpg();" value="Save Jpg" />
+                    <input type="button" id="btnImgReq" onclick="requestImage();" value="Request Image" />
                 </div>
                 <div>
                     <h3>Copy text</h3>

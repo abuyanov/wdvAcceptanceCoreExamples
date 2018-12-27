@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Microsoft.Extensions.Logging;
 
 namespace TestCore517
 {
@@ -52,7 +53,7 @@ namespace TestCore517
                     await next();
                 });
 
-                wdvApp.RunWebDocumentViewerMiddleware(new WebDocumentViewerOptions(){ReplaceFileExtensionOnSave = ReplaceFileExtension.FilesWithoutExtension},new AbWdvCallbacks(env));
+                wdvApp.RunWebDocumentViewerMiddleware(new WebDocumentViewerOptions(){ReplaceFileExtensionOnSave = ReplaceFileExtension.AllFiles},new AbWdvCallbacks(env));
             });
         }
     }

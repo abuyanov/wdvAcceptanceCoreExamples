@@ -21,13 +21,34 @@ $(function () {
             allowannotations: true,
             showerrors: true,
             'savepath': 'Saved/',
-            'savefileformat':'pdf',
-            'annotations':{'atala_iuname': 'mm'},
+            'savefileformat': 'pdf',
             serverurl: 'wdv',
             allowtext: true,
+            allowforms: true,
             scrolltriggerarea: Atalasoft.Utils.ScrollArea.Normal,
+            direction: Atalasoft.Utils.ScrollDirection.Horizontal,
             mousetool: {
-                type: Atalasoft.Utils.MouseToolType.Pan
+                type: Atalasoft.Utils.MouseToolType.Text,
+                text: {
+                    selection: {
+                        /** Specifies the fill color. */
+                        color: 'green',
+                        /** Specifies the selection transparency level. */
+                        alpha: 0.25
+                    },
+                    hookcopy: true,
+                    allowsearch: true,
+                }
+            },
+
+            showselecttools: true,
+            persistrotation: false,
+            annotations: {      
+                defaults: [
+                    {
+                        type: 'polygon',
+                        fill: {color:'green', opacity: 0.6},
+                    }]
             },
             upload: {
                 enabled:true,
@@ -48,14 +69,16 @@ $(function () {
             minwidth: 60,
             viewer: _viewer,
             allowannotations: true,
+            allowforms: true,
             allowdragdrop: true,
-            showthumbcaption: false,
+            showthumbcaption: true,
             thumbcaptionformat: 'page {0}',
             selectionmode: Atalasoft.Utils.SelectionMode.MultiSelect,
             selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.SelectedOrder,
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
-            tabular:true,
-            columns:2
+            persistrotation: false,
+            //tabular:true,
+            //columns:2
         });
 
         // Initialize Second Thumbnail
@@ -65,16 +88,20 @@ $(function () {
             maxwidth: 120,
             minwidth: 60,
             allowdragdrop: true,
+            allowforms: true,
             viewer:_viewer,
             allowannotations: true,
             showthumbcaption: true,
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
             selectionmode: Atalasoft.Utils.SelectionMode.MultiSelect,
-            selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.SelectedOrder,
+            selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.ItemIndexOrder,
         });
 
         _thumb.bind({
-            'documentloaded':onDocLoaded,
+            'pageinserted': onPageInsert,
+            'pageremoved': onPageRemove,
+            'pagemoved': onPageMove,
+            'documentchanged': onDocChange,
         })
 
         _thumb2.bind({
@@ -102,13 +129,13 @@ $(function () {
         'fileuploadfinished': onFileUploadFinished,
         'uploadfinished':onUploadFinished,
         'annotationtextchanged':onAnnoTextChanged,
-        //'annotationcreated':onAnnoCreated,
+        'annotationcreated':onAnnoCreated,
         'annotationloaded':onAnnoLoaded,
         //'annotationsloaded':onAnnosLoaded,
         'error':onViewerError,
         'documentsaved':onDocSaved,
         'documentinfochanged':onInfoChanged,
-        
+        'beforehandlerrequest':beforereq,
         //'pagetextloaded':onTextLoaded,
         })
 });
@@ -119,6 +146,23 @@ function onDocSaved(ev) {
         appendStatus(ev.customData.Message);
     } else {
         appendStatus("Failed to save document");
+    }
+}
+
+function onThumbSelected(e) {
+    appendStatus("Selected thumb: " + e.index)
+}
+
+function onThumbDeselected(e) {
+    appendStatus("Deselected thumb: " + e.index)
+}
+
+function beforereq(e) {
+    if (e.request.type === 'docsave') {
+        e.request.data.testparam = "{test: 'true'}"
+
+    } else {
+        //appendStatus(e.request.type)
     }
 }
 
@@ -167,7 +211,7 @@ function onFileAdded (eventObj) {
 }
 
 function onAnnoTextChanged(event) {
-    appendStatus('Annotation text was changed: ' + event.annotation.text.value)
+    appendStatus('Annotation text was changed: ' + event.annotation.text.value);
 }
 
 function onAnnoCreated(event) {
@@ -360,4 +404,33 @@ function saveAsJpg() {
 
 function copySelectedText() {
     _viewer.text.copySelected();
+}
+
+function requestImage()
+{
+    _viewer.reloadPage(0, true, false, { bpp: 'UnDefined' });
+}
+
+function burnAnnotation() {
+    var index = parseInt($("#annoindex").val());
+    var ann = _viewer.annotations.getFromPage(0)[index];
+    ann.burn = true;
+    ann.update();
+}
+
+function onPageInsert(e) {
+    appendStatus("Page number " + e.srcindex + " from " + e.srcuri + " inserted to position " + e.destindex)
+}
+
+function onPageRemove(e) {
+    appendStatus("Page with index " + e.index + " was removed.")
+}
+
+function onPageMove(e) {
+    appendStatus("Page was moved from " + e.srcindex + " to " + e.destindex)
+}
+
+function onDocChange() {
+    appendStatus("Document in the left thumb was changed.")
+    appendStatus("----------------------------------------")
 }
