@@ -23,21 +23,19 @@
     "!atalaWebDocumentViewer.*"
   ],
   "dependencies": {
-    "jquery-ui": "^1.10.4",
+    "jquery-ui": "~1.12.1",
     "raphael": "^2.1.4",
-    "jquery": ">=1.11.0",
-    "jquery-easing-original": "^1.3.0",
-    "clipboard": "^1.5.10"
+    "jquery": ">=3.3.1",
+    "clipboard": "^2.0.0"
   },
-  "version": "11.0.11",
-  "_release": "11.0.11",
+  "version": "11.1.0",
+  "_release": "11.1.0",
   "_resolution": {
     "type": "version",
-    "tag": "v11.0.11",
-    "commit": "613063e3f176aa9dc6420bf5afcd6e9481d6f1ff"
+    "tag": "v11.1.0",
+    "commit": "0a8a19c99b4763a68a90fefbcaaf664cfb9562b2"
   },
   "_source": "https://github.com/Atalasoft/web-document-viewer.git",
-  "_target": "v11.0.11",
-  "_originalSource": "web-document-viewer",
-  "_direct": true
+  "_target": "11.1.0",
+  "_originalSource": "web-document-viewer"
 }

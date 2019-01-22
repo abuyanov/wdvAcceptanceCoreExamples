@@ -17,7 +17,6 @@ $(function () {
         _viewer = new Atalasoft.Controls.WebDocumentViewer({
             parent: $('.atala-document-container'),
             toolbarparent: $('.atala-document-toolbar'),
-            'allowforms': true,
             allowannotations: true,
             showerrors: true,
             'savepath': 'Saved/',
@@ -25,41 +24,17 @@ $(function () {
             serverurl: 'wdv',
             allowtext: true,
             allowforms: true,
-            scrolltriggerarea: Atalasoft.Utils.ScrollArea.Normal,
-            direction: Atalasoft.Utils.ScrollDirection.Horizontal,
-            mousetool: {
-                type: Atalasoft.Utils.MouseToolType.Text,
-                text: {
-                    selection: {
-                        /** Specifies the fill color. */
-                        color: 'green',
-                        /** Specifies the selection transparency level. */
-                        alpha: 0.25
-                    },
-                    hookcopy: true,
-                    allowsearch: true,
-                }
-            },
-
-            showselecttools: true,
-            persistrotation: false,
-            annotations: {      
-                defaults: [
-                    {
-                        type: 'polygon',
-                        fill: {color:'green', opacity: 0.6},
-                    }]
-            },
+            direction: Atalasoft.Utils.ScrollDirection.Vertical,
             upload: {
                 enabled:true,
                 uploadpath: 'Upload/Viewer',
                 allowedfiletypes: '.jpg,.pdf,.png,.jpeg,image/tiff',
-                allowedmaxfilesize: 5*1024*1024,
+                allowedmaxfilesize: 1*1024*1024,
                 allowmultiplefiles: true,
-                allowdragdrop: true,
+                allowdragdrop: false,
                 filesuploadconcurrency: 3,
-            }
-
+            },
+            showselecttools: true,
         });
 
         _thumb = new Atalasoft.Controls.WebDocumentThumbnailer({
@@ -72,7 +47,7 @@ $(function () {
             allowforms: true,
             allowdragdrop: true,
             showthumbcaption: true,
-            thumbcaptionformat: 'page {0}',
+            //thumbcaptionformat: 'page {0}',
             selectionmode: Atalasoft.Utils.SelectionMode.MultiSelect,
             selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.SelectedOrder,
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
@@ -161,9 +136,9 @@ function beforereq(e) {
     if (e.request.type === 'docsave') {
         e.request.data.testparam = "{test: 'true'}"
 
-    } else {
+    }// else {
         //appendStatus(e.request.type)
-    }
+    //}
 }
 
 function onDocLoaded(event) {
@@ -215,8 +190,8 @@ function onAnnoTextChanged(event) {
 }
 
 function onAnnoCreated(event) {
-    event.annotation.burn = true;
-    event.annotation.update();
+    //event.annotation.burn = true;
+    //event.annotation.update();
     appendStatus('Annotation was created')
 }
 
@@ -312,13 +287,12 @@ function movePages() {
 }
 
 function insertPages() {
-    var refs = []
+    var refs = [];3
     var pages = _thumb.getSelectedPagesIndices();
-    for (var i = 0; i < pages.length; i++) 
-    {
-        refs.push(_thumb.document.getPageReference(pages[i]))
+    for (var i = 0; i < pages.length; i++) {
+        refs.push(_thumb.document.getPageReference(pages[i]));
     }
-    _thumb2.document.insertPages(null,refs,0,appendStatus("Pages were inserted."))
+    _thumb2.document.insertPages(null, refs, 0, appendStatus("Pages were inserted."));
 };
 
 function searchText() {
