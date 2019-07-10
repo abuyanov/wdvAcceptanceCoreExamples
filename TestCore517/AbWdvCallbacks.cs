@@ -32,6 +32,16 @@ namespace TestCore517
             //_logger.LogInformation("Response send for file save");
         }
 
+        public override void DocumentSave(DocumentSaveEventArgs dseargs)
+        {
+            var result = dseargs.Params;
+        }
+
+        public override void ImageRequested(ImageRequestedEventArgs imreqargs)
+        {
+            var result = imreqargs.Params;
+        }
+
         //got
         public override void DocumentInfoRequestResponseSend(ResponseSendEventArgs e)
         {

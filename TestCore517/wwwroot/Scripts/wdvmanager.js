@@ -10,6 +10,7 @@ function appendStatus(msg) {
     stat.append(msg + "<br>");
 }
 
+
 // Initialize Web Viewing
 $(function () {
     try {
@@ -19,22 +20,98 @@ $(function () {
             toolbarparent: $('.atala-document-toolbar'),
             allowannotations: true,
             showerrors: true,
-            'savepath': 'Saved/',
-            'savefileformat': 'pdf',
+            savepath: 'Saved/',
+            savefileformat: 'pdf',
             serverurl: 'wdv',
             allowtext: true,
             allowforms: true,
+            persistrotation: true,
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
+            annotations: {
+                stamps: [
+                    {
+                        'name': 'Approved',
+                        'fill': {
+                            'color': 'green',
+                            'opacity': 0.5
+                        },
+                        'outline': {
+                            'color': '#43BC6F'
+                        },
+                        'text': {
+                            'value': 'This document has been approved',
+                            'align': 'left',
+                            'font': {
+                                'bold': false,
+                                'color': '#B9C89D',
+                                'family': 'Georgia',
+                                'size': 24
+                            }
+                        }
+                    },
+                    {
+                        'name': 'Approved2',
+                        'fill': {
+                            'color': 'green',
+                            'opacity': 0.5
+                        },
+                        'outline': {
+                            'color': 'Black'
+                        },
+                        'text': {
+                            'value': 'Approved',
+                            'align': 'left',
+                            'font': {
+                                'bold': false,
+                                'color': 'black',
+                                'family': 'Arial',
+                                'size': 24
+                            }
+                        },
+                        'cornerradius': 50,
+                        burn: true
+                    }
+                ],
+                images:[{
+                    name:'fox',
+                    src: 'images/fox.jpg',
+                    readonly: true,
+                }],
+                defaults: [
+                    {
+                        type: 'line',
+                        outline: {
+                            color: 'red',
+                            width: 4,
+                            endcap: {
+                                style: 'open'
+                            }
+                        },
+                    }]
+            },
+           
             upload: {
                 enabled:true,
                 uploadpath: 'Upload/Viewer',
                 allowedfiletypes: '.jpg,.pdf,.png,.jpeg,image/tiff',
-                allowedmaxfilesize: 1*1024*1024,
+                allowedmaxfilesize: 6*1024*1024,
                 allowmultiplefiles: true,
-                allowdragdrop: false,
+                allowdragdrop: true,
                 filesuploadconcurrency: 3,
             },
             showselecttools: true,
+            mousetool: {
+                type: Atalasoft.Utils.MouseToolType.Text,
+                text: {
+                    selection: {
+                        /** Specifies the fill color. */
+                        color: 'green',
+                        /** Specifies the selection transparency level. */
+                        alpha: 0.25
+                    },
+                    hookcopy: true,
+                }
+            }
         });
 
         _thumb = new Atalasoft.Controls.WebDocumentThumbnailer({
@@ -51,7 +128,7 @@ $(function () {
             selectionmode: Atalasoft.Utils.SelectionMode.MultiSelect,
             selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.SelectedOrder,
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
-            persistrotation: false,
+            persistrotation: true,
             //tabular:true,
             //columns:2
         });
@@ -70,6 +147,7 @@ $(function () {
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
             selectionmode: Atalasoft.Utils.SelectionMode.MultiSelect,
             selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.ItemIndexOrder,
+            //documenturl: 'images/10Numbered Pages.TIF',
         });
 
         _thumb.bind({
@@ -93,26 +171,29 @@ $(function () {
 
         loadFile();
 
+
     } catch (error) {
         appendStatus("Thrown error: " + error.description);
     }
 
     _viewer.bind({
-        'fileaddedtoupload':onFileAdded,
-        'uploadstarted':onUploadStart,
-        'fileuploadstarted':onFileUploadStart,
+        'fileaddedtoupload': onFileAdded,
+        'uploadstarted': onUploadStart,
+        'fileuploadstarted': onFileUploadStart,
         'fileuploadfinished': onFileUploadFinished,
-        'uploadfinished':onUploadFinished,
-        'annotationtextchanged':onAnnoTextChanged,
-        'annotationcreated':onAnnoCreated,
-        'annotationloaded':onAnnoLoaded,
-        //'annotationsloaded':onAnnosLoaded,
-        'error':onViewerError,
-        'documentsaved':onDocSaved,
-        'documentinfochanged':onInfoChanged,
-        'beforehandlerrequest':beforereq,
+        'uploadfinished': onUploadFinished,
+        'annotationtextchanged': onAnnoTextChanged,
+        //'annotationcreated':onAnnoCreated,
+        //'annotationloaded':onAnnoLoaded,
+        'annotationsloaded':onAnnosLoaded,
+        'error': onViewerError,
+        'documentsaved': onDocSaved,
+        'documentinfochanged': onInfoChanged,
+        'beforehandlerrequest': beforereq,
         //'pagetextloaded':onTextLoaded,
-        })
+    });
+
+    $("#versionInfo").text("Version: " + Atalasoft.Controls.Version);
 });
 
 function onDocSaved(ev) {
@@ -125,44 +206,46 @@ function onDocSaved(ev) {
 }
 
 function onThumbSelected(e) {
-    appendStatus("Selected thumb: " + e.index)
+    appendStatus("Selected thumb: " + e.index);
 }
 
 function onThumbDeselected(e) {
-    appendStatus("Deselected thumb: " + e.index)
+    appendStatus("Deselected thumb: " + e.index);
 }
 
 function beforereq(e) {
     if (e.request.type === 'docsave') {
-        e.request.data.testparam = "{test: 'true'}"
-
-    }// else {
-        //appendStatus(e.request.type)
-    //}
+        e.request.data.testparam = "{test: 'true'}";
+    }
 }
 
 function onDocLoaded(event) {
-    appendStatus(event.customData.CustomMessage)
+    appendStatus(event.customData.CustomMessage);
 }
 
 function onInfoChanged(evnt) {
-    appendStatus("Document info changed")
-    if(!!evnt.customData)
-    appendStatus(evnt.customData.CustomMessage)
+    appendStatus("Document info changed");
+    if (!!evnt.customData)
+        appendStatus(evnt.customData.CustomMessage);
 }
 
 function onAnnosLoaded(evnt) {
-    //appendStatus(evnt.customData.CustomMessage)
+    if (evnt.customData) {
+        appendStatus(evnt.customData.CustomMessage);
+    } else {
+        appendStatus("Server did not provided any additional info");
+    }
+    
     //if(Annotations.length != 0)
-        getAnnotations()
+    //getAnnotations();
 }
 
 function onAnnoLoaded(evnt) {
-    appendStatus(evnt.customData.CustomMessage)
+    appendStatus(evnt.customData.CustomMessage);
 }
 
 function onTextLoaded(ev) {
-    appendStatus(ev.customData.CustomMessage)
+    appendStatus(ev.customData.CustomMessage);
 }
 
 function onFileAdded (eventObj) {
@@ -177,7 +260,7 @@ function onFileAdded (eventObj) {
             appendStatus("Prohibited file type.");
             break;
         case 3:
-            appendStatus("File with same name is alredy added to upload. " + eventObj.filename);
+            appendStatus("File with same name is already added to upload. " + eventObj.filename);
             break;
         }
         
@@ -209,11 +292,20 @@ function onFileUploadFinished(eventObj) {
 }
 
 function onUploadFinished(eventObj) {
-    appendStatus('Upload finished with result: ' + eventObj.success)
-    appendStatus('-----------------------------')
-    if(lastUploadedFile)
-        _thumb2.OpenUrl(lastUploadedFile)
+    appendStatus('Upload finished with result: ' + eventObj.success);
+    appendStatus('-----------------------------');
+    if (lastUploadedFile)
+        _thumb2.OpenUrl(lastUploadedFile);
+}
 
+function uploadFiles() {
+    var files = Array.from(document.getElementsByName('fileupload')[0].files);
+    var subfldr = $('#txtSubUpload').val();
+    if (subfldr) {
+        _viewer.uploadFiles(files, subfldr);
+    } else {
+        _viewer.uploadFiles(files);
+    }
 }
 
 function loadFile() {
@@ -221,11 +313,11 @@ function loadFile() {
 }
 
 function loadAnnotations(){
-    var currFile = $('#FileSelectionList').val()
-    var filename = currFile.split('/')[1]
-    var fname = filename.split('.')[0]
-    var xmpFile = "Saved/" + fname + ".xmp"
-    _thumb.OpenUrl(null,xmpFile)
+    var currFile = $('#FileSelectionList').val();
+    var filename = currFile.split('/')[1];
+    var fname = filename.split('.')[0];
+    var xmpFile = "Saved/" + fname + ".xmp";
+    _thumb.OpenUrl(null,xmpFile);
 }
 
 //Drug and Drop events
@@ -252,24 +344,24 @@ function selectPage() {
 
 //Select specified page only
 function deselectPage() {
-    var pageToSelect = $("#PageToSelectNum").val()
-    _thumb.selectThumb(pageToSelect, false)
+    var pageToSelect = $("#PageToSelectNum").val();
+    _thumb.selectThumb(pageToSelect, false);
 }
 
 function getSelectPage() {
-    appendStatus("Selected page: " + _thumb.getSelectedPageIndex())
+    appendStatus("Selected page: " + _thumb.getSelectedPageIndex());
 }
 
 function getSelectedPages() {
-    appendStatus("Selected pages are: " + _thumb.getSelectedPagesIndices())
+    appendStatus("Selected pages are: " + _thumb.getSelectedPagesIndices());
 }
 
 function deletePages() {
     var pagesToDel = _thumb.getSelectedPagesIndices();
     if (pagesToDel.length == 1) {
-        var outmsg = "Page " + pagesToDel + " was deleted"
+        var outmsg = "Page " + pagesToDel + " was deleted";
     } else {
-        var outmsg = "Pages " + pagesToDel + " were deleted"
+        var outmsg = "Pages " + pagesToDel + " were deleted";
     }
     _thumb.document.removePages(pagesToDel, appendStatus(outmsg));
 }
@@ -287,7 +379,7 @@ function movePages() {
 }
 
 function insertPages() {
-    var refs = [];3
+    var refs = [];
     var pages = _thumb.getSelectedPagesIndices();
     for (var i = 0; i < pages.length; i++) {
         refs.push(_thumb.document.getPageReference(pages[i]));
@@ -303,9 +395,9 @@ function searchText() {
         startind = parseInt(start);
     }
 
-    var end = $("#SearchEndPage").val()
+    var end = $("#SearchEndPage").val();
     if (end != "") {
-        endind = parseInt(end)
+        endind = parseInt(end);
     } else {
         endind = _viewer.getDocumentInfo().count - 1;
     }
@@ -315,24 +407,24 @@ function searchText() {
 }
 
 function onViewerError(errEvent) {
-    appendStatus("Oops, error with " + errEvent.name )
-    appendStatus(errEvent.message)
+    appendStatus("Oops, error with " + errEvent.name);
+    appendStatus(errEvent.message);
 }
 
 function getAnnotations() {
     for (var i = 0; i < _viewer.getDocumentInfo().count; i++) {
         var annos = _viewer.getAnnotationsFromPage(i);
         for (var j = 0; j < annos.length; j++) {
-            Annotations.push(annos[j])           
+            Annotations.push(annos[j]);
         }
     }
     _currAnnoIndx = 0;
-    _viewer.annotations.scrollTo(Annotations[_currAnnoIndx])
+    _viewer.annotations.scrollTo(Annotations[_currAnnoIndx]);
 }
 
 function onScroll() {
-    var ann = _viewer.annotations.getSelected()
-    appendStatus("Annotation " + ann.name)
+    var ann = _viewer.annotations.getSelected();
+    appendStatus("Annotation " + ann.name);
 }
 
 function onFindNext() {
@@ -358,7 +450,7 @@ function onNextMatch(iterator, match) {
 function goNextAnno() {
     var next = _currAnnoIndx + 1;
     if (next <= Annotations.length - 1) {
-        _viewer.annotations.scrollTo(Annotations[next])
+        _viewer.annotations.scrollTo(Annotations[next]);
         _currAnnoIndx = next;
     }
     
@@ -367,7 +459,7 @@ function goNextAnno() {
 function goPrevAnno(){
     var next = _currAnnoIndx -1;
     if (next >= 0) {
-        _viewer.annotations.scrollTo(Annotations[next])
+        _viewer.annotations.scrollTo(Annotations[next]);
         _currAnnoIndx = next;
     }
 }
@@ -393,18 +485,43 @@ function burnAnnotation() {
 }
 
 function onPageInsert(e) {
-    appendStatus("Page number " + e.srcindex + " from " + e.srcuri + " inserted to position " + e.destindex)
+    appendStatus("Page number " + e.srcindex + " from " + e.srcuri + " inserted to position " + e.destindex);
 }
 
 function onPageRemove(e) {
-    appendStatus("Page with index " + e.index + " was removed.")
+    appendStatus("Page with index " + e.index + " was removed.");
 }
 
 function onPageMove(e) {
-    appendStatus("Page was moved from " + e.srcindex + " to " + e.destindex)
+    appendStatus("Page was moved from " + e.srcindex + " to " + e.destindex);
 }
 
 function onDocChange() {
-    appendStatus("Document in the left thumb was changed.")
-    appendStatus("----------------------------------------")
+    appendStatus("Document in the left thumb was changed.");
+    appendStatus("----------------------------------------");
 }
+
+function reloadPage(){
+    var pgnum = parseInt($("#numReload").val());
+    if (isNaN(pgnum)) {
+        pgnum = 0;
+    }
+    var reloadAnno = parseReloadField($("#txtReloadAnno").val());
+    var reloadForms = parseReloadField($("#txtReloadForms").val());
+    _viewer.reloadPage(pgnum,reloadAnno,reloadForms);
+}
+
+function parseReloadField(instr) {
+            var ans;
+            switch (instr.toLowerCase()) {
+            case 'true':
+                ans = true;
+                break;
+            case 'false':
+                ans = false;
+                break;
+            default:
+                ans = instr;
+            }
+            return ans;
+        }
