@@ -95,8 +95,8 @@ $(function () {
                 uploadpath: 'Upload/Viewer',
                 allowedfiletypes: '.jpg,.pdf,.png,.jpeg,image/tiff',
                 allowedmaxfilesize: 6*1024*1024,
-                allowmultiplefiles: true,
-                allowdragdrop: true,
+                allowmultiplefiles: false,
+                allowdragdrop: false,
                 filesuploadconcurrency: 3,
             },
             showselecttools: true,
@@ -224,8 +224,7 @@ function onDocLoaded(event) {
 }
 
 function onInfoChanged(evnt) {
-    appendStatus("Document info changed");
-    if (!!evnt.customData)
+   if (evnt.customData)
         appendStatus(evnt.customData.CustomMessage);
 }
 
@@ -275,15 +274,15 @@ function onAnnoTextChanged(event) {
 function onAnnoCreated(event) {
     //event.annotation.burn = true;
     //event.annotation.update();
-    appendStatus('Annotation was created')
+    appendStatus('Annotation was created');
 }
 
 function onUploadStart() {
-    appendStatus('Uploading started')
+    appendStatus('Uploading started');
 }
 
 function onFileUploadStart(eventObj) {
-    appendStatus('Start uploading file: ' + eventObj.fileinfo.filename)
+    appendStatus('Start uploading file: ' + eventObj.fileinfo.filename);
 }
 
 function onFileUploadFinished(eventObj) {
