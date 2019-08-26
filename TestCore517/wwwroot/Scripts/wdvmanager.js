@@ -24,7 +24,7 @@ $(function () {
             savefileformat: 'pdf',
             serverurl: 'wdv',
             allowtext: true,
-            allowforms: true,
+            allowforms: false,
             persistrotation: true,
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
             annotations: {
@@ -90,28 +90,28 @@ $(function () {
                     }]
             },
            
-            upload: {
-                enabled:true,
-                uploadpath: 'Upload/Viewer',
-                allowedfiletypes: '.jpg,.pdf,.png,.jpeg,image/tiff',
-                allowedmaxfilesize: 6*1024*1024,
-                allowmultiplefiles: false,
-                allowdragdrop: false,
-                filesuploadconcurrency: 3,
-            },
-            showselecttools: true,
-            mousetool: {
-                type: Atalasoft.Utils.MouseToolType.Text,
-                text: {
-                    selection: {
-                        /** Specifies the fill color. */
-                        color: 'green',
-                        /** Specifies the selection transparency level. */
-                        alpha: 0.25
-                    },
-                    hookcopy: true,
-                }
-            }
+            //upload: {
+            //    enabled:true,
+            //    uploadpath: 'Upload/Viewer',
+            //    allowedfiletypes: '.jpg,.pdf,.png,.jpeg,image/tiff',
+            //    allowedmaxfilesize: 6*1024*1024,
+            //    allowmultiplefiles: false,
+            //    allowdragdrop: false,
+            //    filesuploadconcurrency: 3,
+            //},
+            //showselecttools: true,
+            //mousetool: {
+            //    type: Atalasoft.Utils.MouseToolType.Text,
+            //    text: {
+            //        selection: {
+            //            /** Specifies the fill color. */
+            //            color: 'green',
+            //            /** Specifies the selection transparency level. */
+            //            alpha: 0.25
+            //        },
+            //        hookcopy: true,
+            //    }
+            //}
         });
 
         _thumb = new Atalasoft.Controls.WebDocumentThumbnailer({
@@ -121,7 +121,7 @@ $(function () {
             minwidth: 60,
             viewer: _viewer,
             allowannotations: true,
-            allowforms: true,
+            allowforms: false,
             allowdragdrop: true,
             showthumbcaption: true,
             //thumbcaptionformat: 'page {0}',
@@ -140,7 +140,7 @@ $(function () {
             maxwidth: 120,
             minwidth: 60,
             allowdragdrop: true,
-            allowforms: true,
+            allowforms: false,
             viewer:_viewer,
             allowannotations: true,
             showthumbcaption: true,
@@ -285,7 +285,7 @@ function onFileUploadStart(eventObj) {
     appendStatus('Start uploading file: ' + eventObj.fileinfo.filename);
 }
 
-function onFileUploadFinished(eventObj) {
+function onFileUploadFinished(eventObj) {evnt,
     appendStatus('File ' + eventObj.filename + ' is uploaded.');
     lastUploadedFile = eventObj.filepath;
 }

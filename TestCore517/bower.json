@@ -1,12 +1,9 @@
 {
   "name": "asp.net",
   "private": true,
-  "dependencies": {
-    "clipboard": "v2.0.4",
-    "web-document-viewer": "11.0.11"
-  },
+  "dependencies": {},
   "resolutions": {
     "clipboard": "v2.0.4",
-    "web-document-viewer": "11.0.11"
+    "web-document-viewer": "11.1.5"
   }
 }

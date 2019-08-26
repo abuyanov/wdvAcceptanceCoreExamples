@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atalasoft.dotImage.Office.x86" Version="11.1.0.5405" />
-    <PackageReference Include="Atalasoft.dotImage.WebControls.Core.x86" Version="11.1.0.5405" />
+    <PackageReference Include="Atalasoft.dotImage.Office.x86" Version="11.1.0.6427" />
+    <PackageReference Include="Atalasoft.dotImage.WebControls.Core.x86" Version="11.1.0.6427" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.1.1" />
@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\lib\" />
+    <Folder Include="wwwroot\Saved\" />
   </ItemGroup>
 
 </Project>
