@@ -285,7 +285,7 @@ function onFileUploadStart(eventObj) {
     appendStatus('Start uploading file: ' + eventObj.fileinfo.filename);
 }
 
-function onFileUploadFinished(eventObj) {evnt,
+function onFileUploadFinished(eventObj) {
     appendStatus('File ' + eventObj.filename + ' is uploaded.');
     lastUploadedFile = eventObj.filepath;
 }
