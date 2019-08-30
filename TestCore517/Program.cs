@@ -11,7 +11,7 @@ namespace TestCore517
     {
         public static void Main(string[] args)
         {
-            RegisteredDecoders.Decoders.Add(new OfficeDecoder());
+            RegisteredDecoders.Decoders.Add(new OfficeAdapterDecoder());
             RegisteredDecoders.Decoders.Add(new PdfDecoder());
             CreateWebHostBuilder(args).Build().Run();
         }

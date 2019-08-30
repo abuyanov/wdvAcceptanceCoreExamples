@@ -90,15 +90,15 @@ $(function () {
                     }]
             },
            
-            //upload: {
-            //    enabled:true,
-            //    uploadpath: 'Upload/Viewer',
-            //    allowedfiletypes: '.jpg,.pdf,.png,.jpeg,image/tiff',
-            //    allowedmaxfilesize: 6*1024*1024,
-            //    allowmultiplefiles: false,
-            //    allowdragdrop: false,
-            //    filesuploadconcurrency: 3,
-            //},
+            upload: {
+                enabled:true,
+                uploadpath: 'Upload/Viewer',
+                allowedfiletypes: '.jpg,.pdf,.png,.jpeg,image/tiff',
+                allowedmaxfilesize: 6*1024*1024,
+                allowmultiplefiles: false,
+                allowdragdrop: false,
+                filesuploadconcurrency: 3,
+            },
             //showselecttools: true,
             //mousetool: {
             //    type: Atalasoft.Utils.MouseToolType.Text,
