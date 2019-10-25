@@ -53,7 +53,7 @@ namespace TestCore517
                     await next();
                 });
 
-                wdvApp.RunWebDocumentViewerMiddleware(new WebDocumentViewerOptions(){ReplaceFileExtensionOnSave = ReplaceFileExtension.AllFiles},new AbWdvCallbacks(env));
+                wdvApp.RunWebDocumentViewerMiddleware(new WebDocumentViewerOptions{ReplaceFileExtensionOnSave = ReplaceFileExtension.AllFiles},new AbWdvCallbacks(env));
             });
         }
     }

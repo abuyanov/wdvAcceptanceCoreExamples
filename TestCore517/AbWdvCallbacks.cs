@@ -2,7 +2,10 @@
 using Atalasoft.Imaging.WebControls;
 using Atalasoft.Imaging.WebControls.Core;
 using System.IO;
+using System.Runtime.CompilerServices;
+using Atalasoft.Imaging;
 using Atalasoft.Imaging.Codec;
+using Atalasoft.Imaging.Codec.Office;
 using Atalasoft.Imaging.Text;
 using Atalasoft.Imaging.WebControls.Text;
 using Microsoft.AspNetCore.Hosting;
@@ -13,17 +16,13 @@ namespace TestCore517
     internal class AbWdvCallbacks : WebDocumentViewerCallbacks
     {
         private IHostingEnvironment _env;
-        private readonly ILogger _logger;
-
-        public AbWdvCallbacks(IHostingEnvironment env, ILogger<AbWdvCallbacks> logger)
-        {
-            _env = env;
-            _logger = logger;
-        }
-
+        private readonly OfficeSession officeSession = OfficeSession.Open();
+        private OfficeAdapterDecoder officeDecoder;
+       
         public AbWdvCallbacks(IHostingEnvironment env)
         {
             _env = env;
+            officeDecoder = new OfficeAdapterDecoder(officeSession);
         }
 
         public override void DocumentSaveResponseSend(ResponseSendEventArgs e)
@@ -37,9 +36,19 @@ namespace TestCore517
             var result = dseargs.Params;
         }
 
-        public override void ImageRequested(ImageRequestedEventArgs imreqargs)
+        public override void ImageRequested(ImageRequestedEventArgs e)
         {
-            var result = imreqargs.Params;
+            var fileName = Path.Combine(_env.WebRootPath, e.FilePath);
+            if (File.Exists(fileName))
+            {
+                using (Stream stream = File.OpenRead(fileName))
+                {
+                    if (officeDecoder.IsValidFormat(stream))
+                    {
+                        e.Image = officeDecoder.Read(stream, e.FrameIndex, null);
+                    }
+                }
+            }
         }
 
         //got
@@ -51,12 +60,27 @@ namespace TestCore517
         public override void DocumentInfoRequested(DocumentInfoRequestedEventArgs e)
         {
             e.ThumbCaptionFormat = "z {0} z";
+            var fileName = Path.Combine(_env.WebRootPath,e.FilePath);
+            if (File.Exists(fileName))
+            {
+                using (var stream = File.OpenRead(fileName))
+                {
+                    if (officeDecoder.IsValidFormat(stream))
+                    {
+                        var imageInfo = officeDecoder.GetImageInfo(stream);
+                        int dpi = officeDecoder.Resolution;
+                        e.Resolution = new Dpi(dpi, dpi, ResolutionUnit.DotsPerInch);
+                        e.PageCount = imageInfo.FrameCount;
+                        e.ColorDepth = imageInfo.ColorDepth;
+                        e.PageSize = imageInfo.Size;
+                    }
+                }
+            }
         }
 
         public override void PageTextSearchResponseSend(ResponseSendEventArgs e)
         {
             e.CustomResponseData.Add("CustomMessage","Text search");
-            //_logger.LogInformation("Text search has been performed.");
         }
 
         public override void PageTextRequestResponseSend(ResponseSendEventArgs e)

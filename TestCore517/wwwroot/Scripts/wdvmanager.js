@@ -69,7 +69,7 @@ $(function () {
                             }
                         },
                         'cornerradius': 50,
-                        burn: true
+                        burn: false
                     }
                 ],
                 images:[{
@@ -96,15 +96,15 @@ $(function () {
                 allowedfiletypes: '.jpg,.pdf,.png,.jpeg,image/tiff',
                 allowedmaxfilesize: 6*1024*1024,
                 allowmultiplefiles: false,
-                allowdragdrop: false,
+                allowdragdrop: true,
                 filesuploadconcurrency: 3,
             },
-            //showselecttools: true,
+            showselecttools: true,
             //mousetool: {
             //    type: Atalasoft.Utils.MouseToolType.Text,
             //    text: {
             //        selection: {
-            //            /** Specifies the fill color. */
+            //           /** Specifies the fill color. */
             //            color: 'green',
             //            /** Specifies the selection transparency level. */
             //            alpha: 0.25
@@ -129,8 +129,8 @@ $(function () {
             selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.SelectedOrder,
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
             persistrotation: true,
-            //tabular:true,
-            //columns:2
+            tabular:true,
+            columns:2
         });
 
         // Initialize Second Thumbnail
@@ -190,11 +190,16 @@ $(function () {
         'documentsaved': onDocSaved,
         'documentinfochanged': onInfoChanged,
         'beforehandlerrequest': beforereq,
-        //'pagetextloaded':onTextLoaded,
+        'pagetextloaded':onTextLoaded,
     });
 
     $("#versionInfo").text("Version: " + Atalasoft.Controls.Version);
 });
+
+//function insertHamletPage() {
+//    _thumb.document.insertPage('images/Hammlet.pdf', 0, _thumb.getDocumentInfo().count);
+//}
+
 
 function onDocSaved(ev) {
     if (ev.success) {
@@ -272,9 +277,9 @@ function onAnnoTextChanged(event) {
 }
 
 function onAnnoCreated(event) {
-    //event.annotation.burn = true;
-    //event.annotation.update();
-    appendStatus('Annotation was created');
+    event.annotation.burn = true;
+    event.annotation.update();
+    appendStatus("Annotation wil be burned at save");
 }
 
 function onUploadStart() {
@@ -307,6 +312,12 @@ function uploadFiles() {
     }
 }
 
+function loadSavedFiles(){
+    var fileName = "Saved/"+ $('#txtLoadSaved').val() + ".pdf";
+    var xmpFile = "Saved/" + $('#txtLoadSaved').val() + ".xmp";
+    _thumb2.OpenUrl(fileName,xmpFile);
+}
+
 function loadFile() {
     _thumb.OpenUrl($('#FileSelectionList').val());
 }
@@ -325,7 +336,7 @@ function onDragStart(evnt) {
     appendStatus("Drug'n'drop started. Page is going to be drugged: " + evnt.dragindex)
 };
 function onDragEnd(evnt, data) {
-    appendStatus("Drug'n'drop almost ended.")
+    appendStatus("Drug'n'drop almost ended.");
     //appendStatus(`Page drugged from page ${data.dragindex} to page ${data.dropindex} data.`)
 
 }

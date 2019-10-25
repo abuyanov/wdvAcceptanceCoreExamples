@@ -47,14 +47,14 @@
                 <select ID="FileSelectionList" onchange="loadFile();">
                     <!--<option value="images/Kitty1.wmf">Kitty</option>
                     <option value="images/Pixel24bppBgr.pcd">Pixel24bppBgr.pcd</option>-->
-                    <option value="images/rotatedRocket.pdf">rocketRotated</option>
-                    <option value="images/1.bmp">1.bmp</option>
-                    <option value="images/AcceptanceForm1.pdf">hardForm2</option>
-                    <option value="images/London.docx">London.docx</option>
                     <option value="images/Test.pdf">Test.pdf</option>
+                    <option value="images/0006.dcm">Dicom1</option>
+                    <option value="images/10Numbered Pages.TIF">10 pages</option>
+                    <option value="images/16bppGray-MONO2-knee">Dicom3</option>
+                    <option value="images/16bppGray-MONO2-NoLut-ort">Dicom4</option>
                     <option value="images/Back to School Planner.xlsx">excel</option>
                     <option value="images/plane.pptx">Powerpoint</option>
-                    <option value="images/10Numbered Pages.TIF">TIF</option>
+                    <option value="images/Hamlet.pdf">Hamlet</option>
                     <option value="images/vx5text1.gif">GIF</option>
                     <option value="images/0.Png">0.Png</option>
                     <option value="images/Rocket.jpg">JPEG</option>
@@ -78,50 +78,54 @@
             </div>
 
             <div class="page-operation-container">
+                <!--<input id="Button4" type="button" value="Add_Page" onclick="insertHamletPage();" />-->
+                <!-- <div>
+        <h4>Annotations</h4>
+        <input type="button" id="btnLoadAnn" value="Load annotations" onclick="loadAnnotations();"/>
+        <input type="button" id="btnEnumAnn" value="Enumerate annotations" onclick="getAnnotations();"/>
+        <input type="button" id="btnMoveToNextAnn" value="Next" onclick="goNextAnno();"/>
+        <input type="button" id="btnMoveToPrevAnn" value="Prev" onclick="goPrevAnno();"/>
+    </div>
+    <div>
+        <label for="numReload">Reload page:</label>
+        <input type="number" value="0" id="numReload" size="3" min="0" /> <br />
+        <label for="txtReloadAnno">Reload annotations:</label>
+        <input type="text" id="txtReloadAnno" value="false" /> <br />
+        <label for="txtReloadForms">Reload forms:</label>
+        <input type="text" id="txtReloadForms" value="false" />
+        <input type="button" id="btnReload" value="Reload" onclick="reloadPage();"/>
+    </div>
+    <div>
+        <h4>Insert pages </h4>
+        <input type="button" id="btnInsert" value="Insert" onclick="insertPages();"/>
+    </div> -->
+                <!--<div>
+        <h3>Castom Search</h3>
+        Start page (first by default): <input type="number" name="startpage" id="SearchStartPage" min="0" value="0" />
+        End page (empty = end of document): <input type="number" name="endpage" id="SearchEndPage" min="0" size="2" /> <br />
+        Phrase: <input type="text" name="searchwhat" id="searchPhrase" />
+        <input type="button" id="btnSearch" onclick="searchText();" value="Search" />
+        <input type="button" id="btnSearchNext" onclick="onFindNext();" value="Next" />
+        <input type="button" id="btnSearchPrev" onclick="onFindPrevious();" value="Prev" />
+    </div>
+    <div>
+        <label for="btnDelPages">Delete selected pages</label>
+        <input type="button" id="btnDelPages" onclick="deletePages();" value="Delete pages" />
+    </div>
 
+    <div>
+        <label for="btnSaveJpg">Save as:</label>
+        <input type="button" id="btnSaveJpg" onclick="saveAsJpg();" value="Save Jpg" />
+        <input type="button" id="btnImgReq" onclick="requestImage();" value="Request Image" />
+    </div>
+    <div>
+        <label for="btnCopySelected">Copy text</label>
+        <input type="button" id="btnCopySelected" onclick="copySelectedText();" value="Copy Text" />
+    </div>-->
                 <div>
-                    <h4>Annotations</h4>
-                    <input type="button" id="btnLoadAnn" value="Load annotations" onclick="loadAnnotations();"/>
-                    <input type="button" id="btnEnumAnn" value="Enumerate annotations" onclick="getAnnotations();"/>
-                    <input type="button" id="btnMoveToNextAnn" value="Next" onclick="goNextAnno();"/>
-                    <input type="button" id="btnMoveToPrevAnn" value="Prev" onclick="goPrevAnno();"/>
-                </div>
-                <div>
-                    <label for="numReload">Reload page:</label>
-                    <input type="number" value="0" id="numReload" size="3" min="0" /> <br />
-                    <label for="txtReloadAnno">Reload annotations:</label>
-                    <input type="text" id="txtReloadAnno" value="false" /> <br />
-                    <label for="txtReloadForms">Reload forms:</label>
-                    <input type="text" id="txtReloadForms" value="false" />
-                    <input type="button" id="btnReload" value="Reload" onclick="reloadPage();"/>
-                </div>
-                <div>
-                    <h4>Insert pages </h4>
-                    <input type="button" id="btnInsert" value="Insert" onclick="insertPages();"/>
-                </div>
-
-                <div>
-                    <h3>Castom Search</h3>
-                    Start page (first by default): <input type="number" name="startpage" id="SearchStartPage" min="0" value="0" />
-                    End page (empty = end of document): <input type="number" name="endpage" id="SearchEndPage" min="0" size="2" /> <br />
-                    Phrase: <input type="text" name="searchwhat" id="searchPhrase" />
-                    <input type="button" id="btnSearch" onclick="searchText();" value="Search" />
-                    <input type="button" id="btnSearchNext" onclick="onFindNext();" value="Next" />
-                    <input type="button" id="btnSearchPrev" onclick="onFindPrevious();" value="Prev" />
-                </div>
-                <div>
-                    <label for="btnDelPages">Delete selected pages</label>
-                    <input type="button" id="btnDelPages" onclick="deletePages();" value="Delete pages" />
-                </div>
-
-                <div>
-                    <label for="btnSaveJpg">Save as:</label>
-                    <input type="button" id="btnSaveJpg" onclick="saveAsJpg();" value="Save Jpg" />
-                    <input type="button" id="btnImgReq" onclick="requestImage();" value="Request Image" />
-                </div>
-                <div>
-                    <label for="btnCopySelected">Copy text</label>
-                    <input type="button" id="btnCopySelected" onclick="copySelectedText();" value="Copy Text" />
+                    <h3> Load saved</h3>
+                    <input type="text" name="loadSaved" id="txtLoadSaved" />
+                    <input type="button" id="btnLoadSaved" value="Load" onclick="loadSavedFiles();" />
                 </div>
                 <div>
                     <h3> Custom upload</h3>
