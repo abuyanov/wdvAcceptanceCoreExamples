@@ -6,11 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Atalasoft.dotImage.Dicom.x86" Version="11.2.0.206" />
-    <PackageReference Include="Atalasoft.dotImage.Jbig2.x86" Version="11.2.0.206" />
-    <PackageReference Include="Atalasoft.dotImage.Jpeg2000.x86" Version="11.2.0.206" />
-    <PackageReference Include="Atalasoft.dotImage.Office.x86" Version="11.2.0.206" />
-    <PackageReference Include="Atalasoft.dotImage.WebControls.Core.x86" Version="11.2.0.206" />
+    <PackageReference Include="Atalasoft.dotImage.Dicom.x86" Version="11.2.0.1248" />
+    <PackageReference Include="Atalasoft.dotImage.Jbig2.x86" Version="11.2.0.1248" />
+    <PackageReference Include="Atalasoft.dotImage.Jpeg2000.x86" Version="11.2.0.1248" />
+    <PackageReference Include="Atalasoft.dotImage.Office.x86" Version="11.2.0.1248" />
+    <PackageReference Include="Atalasoft.dotImage.WebControls.Core.x86" Version="11.2.0.1248" />
+    <PackageReference Include="bootstrap" Version="3.4.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.1.1" />

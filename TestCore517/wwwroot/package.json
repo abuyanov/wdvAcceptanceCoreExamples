@@ -1,0 +1,22 @@
+{
+  "name": "my_wdv",
+  "version": "1.0.0",
+  "description": "wdv sample",
+  "main": "wdvmanager.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^6.7.2"
+  },
+  "scripts": {
+    "test": "No tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "no"
+  },
+  "author": "Buyanov A.V.",
+  "license": "ISC"
+}

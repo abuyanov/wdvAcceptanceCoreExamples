@@ -2,7 +2,7 @@
   "name": "asp.net",
   "private": true,
   "dependencies": {
-    "web-document-viewer": "v11.1.7",
+    "web-document-viewer": "11.2.0",
     "clipboard": "v2.0.4"
   }
 }

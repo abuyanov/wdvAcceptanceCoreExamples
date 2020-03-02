@@ -48,7 +48,10 @@
                     <!--<option value="images/Kitty1.wmf">Kitty</option>
                     <option value="images/Pixel24bppBgr.pcd">Pixel24bppBgr.pcd</option>-->
                     <option value="images/Test.pdf">Test.pdf</option>
-                    <option value="images/0006.dcm">Dicom1</option>
+                    <option value="images/Despeckle.tif">Despeckle.tif</option>
+                    <option value="images/London.docx">Doc File</option>
+                    <option value="images/1.bmp">1.bmp</option>
+                    <option value="images/Kitty1.wmf">Kitty.wmf</option>
                     <option value="images/10Numbered Pages.TIF">10 pages</option>
                     <option value="images/16bppGray-MONO2-knee">Dicom3</option>
                     <option value="images/16bppGray-MONO2-NoLut-ort">Dicom4</option>
@@ -56,12 +59,13 @@
                     <option value="images/plane.pptx">Powerpoint</option>
                     <option value="images/Hamlet.pdf">Hamlet</option>
                     <option value="images/vx5text1.gif">GIF</option>
+                    <option value="images/SampleImage.TIF">SampleTiff</option>
                     <option value="images/0.Png">0.Png</option>
                     <option value="images/Rocket.jpg">JPEG</option>
                     <option value="images/AcroForm pdf error.PDF">Anketa Raiffeisen</option>
                     <option value="images/2A Authorization and Informed Consent for Treatment.pdf">hard form</option>
                     <option value="images/drvrecapp.pdf">Form2</option>
-                    <option value="images/TextBoxAuto.pdf">TextBox</option>
+                    <option value="images/DuplicateText.pdf">DuplicateText</option>
                 </select>
 
                 <div id="thumb1" class="atala-document-thumbnailer" style="width: 150px; height: 600px; float: left"></div>
@@ -69,7 +73,7 @@
 
             <div class="viewer-container">
                 <div class="atala-document-toolbar" style="width: 900px;"></div>
-                <div class="atala-document-container" style="width: 900px; height: 600px;"></div>
+                <div class="atala-document-container" style="width: 900px; height: 700px;"></div>
             </div>
 
             <div class="thumb-container">
@@ -85,21 +89,29 @@
         <input type="button" id="btnEnumAnn" value="Enumerate annotations" onclick="getAnnotations();"/>
         <input type="button" id="btnMoveToNextAnn" value="Next" onclick="goNextAnno();"/>
         <input type="button" id="btnMoveToPrevAnn" value="Prev" onclick="goPrevAnno();"/>
-    </div>
+    </div>-->
+                <div>
+                    <label for="numReload">Reload page:</label>
+                    <input type="number" value="0" id="numReload" size="3" min="0" /> <br />
+                    <label for="txtReloadAnno">Reload annotations:</label>
+                    <input type="text" id="txtReloadAnno" value="false" /> <br />
+                    <label for="txtReloadForms">Reload forms:</label>
+                    <input type="text" id="txtReloadForms" value="false" />
+                    <input type="button" id="btnReload" value="Reload" onclick="reloadPage();"/>
+                </div>
+                <div>
+                    <label for="savePdfa">Save as PdfA</label>
+                    <input type="checkbox" id="savePdfa"/>
+                    <h4>Insert pages </h4>
+                    <input type="button" id="btnInsert" value="Insert" onclick="insertPages();"/>
+                </div>
     <div>
-        <label for="numReload">Reload page:</label>
-        <input type="number" value="0" id="numReload" size="3" min="0" /> <br />
-        <label for="txtReloadAnno">Reload annotations:</label>
-        <input type="text" id="txtReloadAnno" value="false" /> <br />
-        <label for="txtReloadForms">Reload forms:</label>
-        <input type="text" id="txtReloadForms" value="false" />
-        <input type="button" id="btnReload" value="Reload" onclick="reloadPage();"/>
+        <h4>Scroll</h4>
+        <input type="number" value="29" id="numToGo" size="3" min="0" /> <br />
+        <input type="button" id="btnOpenAtPage" value="Open" onclick="openatpage();"/>
+        <input type="button" id="btnScrollToPage" value="Go" onclick="scrolltopage();"/>
     </div>
-    <div>
-        <h4>Insert pages </h4>
-        <input type="button" id="btnInsert" value="Insert" onclick="insertPages();"/>
-    </div> -->
-                <!--<div>
+    <!-- <div>
         <h3>Castom Search</h3>
         Start page (first by default): <input type="number" name="startpage" id="SearchStartPage" min="0" value="0" />
         End page (empty = end of document): <input type="number" name="endpage" id="SearchEndPage" min="0" size="2" /> <br />
@@ -121,7 +133,7 @@
     <div>
         <label for="btnCopySelected">Copy text</label>
         <input type="button" id="btnCopySelected" onclick="copySelectedText();" value="Copy Text" />
-    </div>-->
+    </div> -->
                 <div>
                     <h3> Load saved</h3>
                     <input type="text" name="loadSaved" id="txtLoadSaved" />

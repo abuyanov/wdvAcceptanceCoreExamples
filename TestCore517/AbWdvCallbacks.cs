@@ -2,14 +2,14 @@
 using Atalasoft.Imaging.WebControls;
 using Atalasoft.Imaging.WebControls.Core;
 using System.IO;
-using System.Runtime.CompilerServices;
 using Atalasoft.Imaging;
 using Atalasoft.Imaging.Codec;
 using Atalasoft.Imaging.Codec.Office;
+using Atalasoft.Imaging.Codec.Pdf;
 using Atalasoft.Imaging.Text;
 using Atalasoft.Imaging.WebControls.Text;
+using Atalasoft.PdfDoc;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace TestCore517
 {
@@ -27,13 +27,49 @@ namespace TestCore517
 
         public override void DocumentSaveResponseSend(ResponseSendEventArgs e)
         {
-            e.CustomResponseData.Add("Message","All we need is love!!!");
-            //_logger.LogInformation("Response send for file save");
+            if (!(bool)e.OriginalResponse["success"])
+            {
+                if (e.OriginalResponse["error"].ToString()
+                    .Equals("Atalasoft.Imaging.WebControls.Exceptions.WebDocumentException"))
+                {
+                    e.CustomResponseData.Add("Message", "It is possible you're trying to save a multipage document using inappropriate format");
+                }
+                else
+                {
+                    e.CustomResponseData.Add("Message", e.OriginalResponse["error"].ToString());
+                }
+                
+            }
+            else
+            {
+                e.CustomResponseData.Add("Message", "Document saved successfully");
+            }
         }
 
-        public override void DocumentSave(DocumentSaveEventArgs dseargs)
+        public override void DocumentSave(DocumentSaveEventArgs docSaveArgs)
         {
-            var result = dseargs.Params;
+            if (docSaveArgs.SaveFileFormat.Equals("pdf"))
+            {
+                var asPdfa = bool.Parse(docSaveArgs.Params["asPdfa"]);
+                if (asPdfa)
+                {
+                    docSaveArgs.PreventDefaultSaving = true;
+                    var encoder = new PdfEncoder
+                    {
+                        DocumentType = PdfDocumentType.PdfA1b
+                    };
+                    var imagesource = docSaveArgs.ImageSource;
+                    var saveFolder = Path.Combine(_env.WebRootPath, docSaveArgs.SaveFolder, "pdfas");
+                    var mappedSaveDocPath = Path.Combine(saveFolder, docSaveArgs.FileName);
+                    if (!Directory.Exists(saveFolder))
+                        Directory.CreateDirectory(saveFolder);
+
+                    using (Stream documentOut = File.OpenWrite(mappedSaveDocPath))
+                    {
+                        encoder.Save(documentOut, imagesource, null);
+                    }
+                }
+            }
         }
 
         public override void ImageRequested(ImageRequestedEventArgs e)
@@ -54,7 +90,7 @@ namespace TestCore517
         //got
         public override void DocumentInfoRequestResponseSend(ResponseSendEventArgs e)
         {
-            e.CustomResponseData.Add("CustomMessage","Doc info was requested.");
+            e.CustomResponseData.Add("CusDtomMessage","Doc info was requested.");
         }
 
         public override void DocumentInfoRequested(DocumentInfoRequestedEventArgs e)
@@ -92,6 +128,14 @@ namespace TestCore517
         public override void AnnotationsDataResponseSend(ResponseSendEventArgs e)
         {
             e.CustomResponseData.Add("CustomMessage","Annotation response");
+        }
+
+        public override void AnnotationDataRequested(AnnotationDataRequestedEventArgs args)
+        {
+            //if (args.DocumentPath.Contains("Kitty") && args.FilePath == null)
+            //{
+            //    args.FilePath = "Saved/Kitty1.xmp";
+            //}
         }
 
         public override void PageTextRequested(PageTextRequestedEventArgs pgArgs)

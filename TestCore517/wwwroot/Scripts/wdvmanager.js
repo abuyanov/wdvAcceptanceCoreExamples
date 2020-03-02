@@ -1,6 +1,6 @@
-﻿var _viewer, _thumb, _thumb2;
+﻿/*global Atalasoft */
+var _viewer, _thumb, _thumb2;
 var lastUploadedFile;
-var selectedAnno;
 var _currIter;
 var _currAnnoIndx = 0;
 var Annotations = [];
@@ -19,13 +19,13 @@ $(function () {
             parent: $('.atala-document-container'),
             toolbarparent: $('.atala-document-toolbar'),
             allowannotations: true,
-            showerrors: true,
+            showerrors: false,
             savepath: 'Saved/',
-            savefileformat: 'pdf',
+            savefileformat:'pdf',
             serverurl: 'wdv',
             allowtext: true,
-            allowforms: false,
-            persistrotation: true,
+            allowforms: true,
+            //persistrotation: true,
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
             annotations: {
                 stamps: [
@@ -100,18 +100,23 @@ $(function () {
                 filesuploadconcurrency: 3,
             },
             showselecttools: true,
-            //mousetool: {
-            //    type: Atalasoft.Utils.MouseToolType.Text,
-            //    text: {
-            //        selection: {
-            //           /** Specifies the fill color. */
-            //            color: 'green',
-            //            /** Specifies the selection transparency level. */
-            //            alpha: 0.25
-            //        },
-            //        hookcopy: true,
-            //    }
-            //}
+            singlepage: false,
+            //fitting:Atalasoft.Utils.Fitting.Height,
+            //tabular:true,
+            //columns:-1,
+            //
+            mousetool: {
+               type: Atalasoft.Utils.MouseToolType.Text,
+               text: {
+                   selection: {
+                      /** Specifies the fill color. */
+                       color: 'green',
+                       /** Specifies the selection transparency level. */
+                       alpha: 0.25
+                   },
+                   hookcopy: true,
+               }
+            },
         });
 
         _thumb = new Atalasoft.Controls.WebDocumentThumbnailer({
@@ -121,16 +126,16 @@ $(function () {
             minwidth: 60,
             viewer: _viewer,
             allowannotations: true,
-            allowforms: false,
+            allowforms: true,
             allowdragdrop: true,
             showthumbcaption: true,
-            //thumbcaptionformat: 'page {0}',
+            thumbcaptionformat: 'page {0}',
             selectionmode: Atalasoft.Utils.SelectionMode.MultiSelect,
             selecteditemsorder: Atalasoft.Utils.SelectedItemsOrder.SelectedOrder,
             direction: Atalasoft.Utils.ScrollDirection.Vertical,
-            persistrotation: true,
-            tabular:true,
-            columns:2
+            //persistrotation: true,
+            // tabular:true,
+            // columns:2
         });
 
         // Initialize Second Thumbnail
@@ -140,7 +145,7 @@ $(function () {
             maxwidth: 120,
             minwidth: 60,
             allowdragdrop: true,
-            allowforms: false,
+            allowforms: true,
             viewer:_viewer,
             allowannotations: true,
             showthumbcaption: true,
@@ -185,12 +190,19 @@ $(function () {
         'annotationtextchanged': onAnnoTextChanged,
         //'annotationcreated':onAnnoCreated,
         //'annotationloaded':onAnnoLoaded,
-        'annotationsloaded':onAnnosLoaded,
+        'annotationsloaded': onAnnosLoaded,
         'error': onViewerError,
         'documentsaved': onDocSaved,
         'documentinfochanged': onInfoChanged,
         'beforehandlerrequest': beforereq,
-        'pagetextloaded':onTextLoaded,
+        'pagetextloaded': onTextLoaded,
+        //'pagesizechanged': function(event) {
+        //    console.log('Size changed for page ' + event.index + ' dy: ' + event.dy);
+        //},
+        //'scroll': function (event) {
+        //    console.log('scroll event captured: ' + event.dy);
+        //},
+
     });
 
     $("#versionInfo").text("Version: " + Atalasoft.Controls.Version);
@@ -207,20 +219,23 @@ function onDocSaved(ev) {
         appendStatus(ev.customData.Message);
     } else {
         appendStatus("Failed to save document");
+        appendStatus(ev.customData.Message);
     }
 }
 
+// eslint-disable-next-line no-unused-vars
 function onThumbSelected(e) {
     appendStatus("Selected thumb: " + e.index);
 }
 
+// eslint-disable-next-line no-unused-vars
 function onThumbDeselected(e) {
     appendStatus("Deselected thumb: " + e.index);
 }
 
 function beforereq(e) {
     if (e.request.type === 'docsave') {
-        e.request.data.testparam = "{test: 'true'}";
+        e.request.data.asPdfa = $('#savePdfa').prop('checked');
     }
 }
 
@@ -244,6 +259,7 @@ function onAnnosLoaded(evnt) {
     //getAnnotations();
 }
 
+// eslint-disable-next-line no-unused-vars
 function onAnnoLoaded(evnt) {
     appendStatus(evnt.customData.CustomMessage);
 }
@@ -252,9 +268,40 @@ function onTextLoaded(ev) {
     appendStatus(ev.customData.CustomMessage);
 }
 
+function getPageIndex() {
+    return parseInt($("#numToGo").val()) - 1;
+}
+
+function scrolltopage(){
+    const pageIndex = getPageIndex();
+    //_viewer.showPage(pageIndex);
+    _thumb.scrollToThumb(pageIndex, function() {
+        _thumb.selectThumb(pageIndex);
+    });
+
+
+    //_viewer.showPage(pageIndex,
+    //    function() {
+    //        _thumb.scrollToThumb(pageIndex,
+    //            function() {
+    //                _viewer.showPage(pageIndex,
+    //                    function() {
+    //                        console.log('Final callback');
+    //                    });
+    //            });
+    //    });
+}
+// eslint-disable-next-line no-unused-vars
+function openatpage(){
+    _thumb.openUrl("Images/SampleImage.TIF", "", function () {
+        setTimeout(scrolltopage(), 1000);
+            });
+            return false;
+        }
+
 function onFileAdded (eventObj) {
     if (eventObj.success) {
-        appendStatus('File '+ eventObj.filename + ' is ready to upload')
+        appendStatus("File " + eventObj.filename + " is ready to upload");
     } else {
         switch (eventObj.reason) {
         case 1:
@@ -276,6 +323,7 @@ function onAnnoTextChanged(event) {
     appendStatus('Annotation text was changed: ' + event.annotation.text.value);
 }
 
+// eslint-disable-next-line no-unused-vars
 function onAnnoCreated(event) {
     event.annotation.burn = true;
     event.annotation.update();
@@ -302,6 +350,7 @@ function onUploadFinished(eventObj) {
         _thumb2.OpenUrl(lastUploadedFile);
 }
 
+// eslint-disable-next-line no-unused-vars
 function uploadFiles() {
     var files = Array.from(document.getElementsByName('fileupload')[0].files);
     var subfldr = $('#txtSubUpload').val();
@@ -312,6 +361,7 @@ function uploadFiles() {
     }
 }
 
+// eslint-disable-next-line no-unused-vars
 function loadSavedFiles(){
     var fileName = "Saved/"+ $('#txtLoadSaved').val() + ".pdf";
     var xmpFile = "Saved/" + $('#txtLoadSaved').val() + ".xmp";
@@ -322,6 +372,7 @@ function loadFile() {
     _thumb.OpenUrl($('#FileSelectionList').val());
 }
 
+// eslint-disable-next-line no-unused-vars
 function loadAnnotations(){
     var currFile = $('#FileSelectionList').val();
     var filename = currFile.split('/')[1];
@@ -333,61 +384,70 @@ function loadAnnotations(){
 //Drug and Drop events
 
 function onDragStart(evnt) {
-    appendStatus("Drug'n'drop started. Page is going to be drugged: " + evnt.dragindex)
-};
+    appendStatus("Drag'n'drop started. Page is going to be dragged: " + evnt.dragindex);
+}
 function onDragEnd(evnt, data) {
-    appendStatus("Drug'n'drop almost ended.");
-    //appendStatus(`Page drugged from page ${data.dragindex} to page ${data.dropindex} data.`)
+    
+    appendStatus('Page drugged from page ' + data.dragindex + ' to page ${data.dropindex} data.');
 
 }
 function onDragComplete(evnt, data) {
-    appendStatus("Drug'n'drop completed.")
-    //appendStatus(`Page drugged from page ${data.dragindex} to page ${data.dropindex} data.`)
+    
+    appendStatus("Page drugged from page "+ data.dragindex + " to page ${data.dropindex} data.");
 }
 
 //Select pages
 //Add page to set of selected pages.
+// eslint-disable-next-line no-unused-vars
 function selectPage() {
     var pageToSelect = $("#PageToSelectNum").val()
     _thumb.selectThumb(pageToSelect, true)
 }
 
 //Select specified page only
+// eslint-disable-next-line no-unused-vars
 function deselectPage() {
     var pageToSelect = $("#PageToSelectNum").val();
     _thumb.selectThumb(pageToSelect, false);
 }
 
+// eslint-disable-next-line no-unused-vars
 function getSelectPage() {
     appendStatus("Selected page: " + _thumb.getSelectedPageIndex());
 }
 
+// eslint-disable-next-line no-unused-vars
 function getSelectedPages() {
     appendStatus("Selected pages are: " + _thumb.getSelectedPagesIndices());
 }
 
+// eslint-disable-next-line no-unused-vars
 function deletePages() {
-    var pagesToDel = _thumb.getSelectedPagesIndices();
+    let pagesToDel = _thumb.getSelectedPagesIndices();
+    let outmsg;
     if (pagesToDel.length == 1) {
-        var outmsg = "Page " + pagesToDel + " was deleted";
+        outmsg = "Page " + pagesToDel + " was deleted";
     } else {
-        var outmsg = "Pages " + pagesToDel + " were deleted";
+        outmsg = "Pages " + pagesToDel + " were deleted";
     }
     _thumb.document.removePages(pagesToDel, appendStatus(outmsg));
 }
 
+// eslint-disable-next-line no-unused-vars
 function rotatePages() {
     var pages = _thumb.getSelectedPagesIndices();
     var angle = 90;
-    _thumb.document.rotatePages(pages, angle, appendStatus("Pages were rotated"))
+    _thumb.document.rotatePages(pages, angle, appendStatus("Pages were rotated"));
 }
 
+// eslint-disable-next-line no-unused-vars
 function movePages() {
     var pages = _thumb.getSelectedPagesIndices();
     _thumb.document.movePages(pages, 0,
         appendStatus("Pages " + pages + "  were moved to begin of document"))
 }
 
+// eslint-disable-next-line no-unused-vars
 function insertPages() {
     var refs = [];
     var pages = _thumb.getSelectedPagesIndices();
@@ -395,8 +455,9 @@ function insertPages() {
         refs.push(_thumb.document.getPageReference(pages[i]));
     }
     _thumb2.document.insertPages(null, refs, 0, appendStatus("Pages were inserted."));
-};
+}
 
+// eslint-disable-next-line no-unused-vars
 function searchText() {
     var startind = 0;
     var endind;
@@ -421,6 +482,7 @@ function onViewerError(errEvent) {
     appendStatus(errEvent.message);
 }
 
+// eslint-disable-next-line no-unused-vars
 function getAnnotations() {
     for (var i = 0; i < _viewer.getDocumentInfo().count; i++) {
         var annos = _viewer.getAnnotationsFromPage(i);
@@ -432,17 +494,20 @@ function getAnnotations() {
     _viewer.annotations.scrollTo(Annotations[_currAnnoIndx]);
 }
 
+// eslint-disable-next-line no-unused-vars
 function onScroll() {
     var ann = _viewer.annotations.getSelected();
     appendStatus("Annotation " + ann.name);
 }
 
+// eslint-disable-next-line no-unused-vars
 function onFindNext() {
     if (_currIter && _currIter.isValid()) {
         _currIter.next(onNextMatch);
     } 
 }
 
+// eslint-disable-next-line no-unused-vars
 function onFindPrevious() {
     if (_currIter && _currIter.isValid()) {
         _currIter.prev(onNextMatch);
@@ -457,6 +522,7 @@ function onNextMatch(iterator, match) {
     }
 }
 
+// eslint-disable-next-line no-unused-vars
 function goNextAnno() {
     var next = _currAnnoIndx + 1;
     if (next <= Annotations.length - 1) {
@@ -466,6 +532,7 @@ function goNextAnno() {
     
 }
 
+// eslint-disable-next-line no-unused-vars
 function goPrevAnno(){
     var next = _currAnnoIndx -1;
     if (next >= 0) {
@@ -474,19 +541,23 @@ function goPrevAnno(){
     }
 }
 
+// eslint-disable-next-line no-unused-vars
 function saveAsJpg() {
     _viewer.save('jpgs', 'jpg');
 }
 
+// eslint-disable-next-line no-unused-vars
 function copySelectedText() {
     _viewer.text.copySelected();
 }
 
+// eslint-disable-next-line no-unused-vars
 function requestImage()
 {
     _viewer.reloadPage(0, true, false, { bpp: 'UnDefined' });
 }
 
+// eslint-disable-next-line no-unused-vars
 function burnAnnotation() {
     var index = parseInt($("#annoindex").val());
     var ann = _viewer.annotations.getFromPage(0)[index];
@@ -511,6 +582,7 @@ function onDocChange() {
     appendStatus("----------------------------------------");
 }
 
+// eslint-disable-next-line no-unused-vars
 function reloadPage(){
     var pgnum = parseInt($("#numReload").val());
     if (isNaN(pgnum)) {
